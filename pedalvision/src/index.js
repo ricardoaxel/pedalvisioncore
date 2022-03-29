@@ -1,10 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import PedalboardView from "./views/PedalboardView/PedalboardView";
+import { App } from "./App";
 
 ReactDOM.render(
   <React.StrictMode>
-    <PedalboardView />
+    <App />
   </React.StrictMode>,
   document.getElementById("root")
 );

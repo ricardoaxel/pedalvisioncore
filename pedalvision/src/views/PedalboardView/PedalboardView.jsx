@@ -1,8 +1,13 @@
 import { useState } from "react";
+import { Pedalboard } from "../../Components/Pedalboard";
 import { style } from "./PedalboardView.css";
-const PedalboardView = () => {
-  const [color, setColor] = useState("red");
-  return <div css={style(color)}>PedalboardView</div>;
+export const PedalboardView = () => {
+  return (
+    <div css={style()}>
+      <div className="headSec">Head</div>
+      <div className="pbZone">
+        <Pedalboard className={"pbContainerExtraClass"} />
+      </div>
+    </div>
+  );
 };
-
-export default PedalboardView;
