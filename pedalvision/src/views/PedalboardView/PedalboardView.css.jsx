@@ -10,12 +10,13 @@ export const style = (color) => {
     }
     .pbZone {
       width: 100%;
-      height: 100%;
+      height: calc(100% - 12rem);
       display: flex;
+      /* background-color: #5f5757; */
       justify-content: center;
       display: scroll;
       .pbContainerExtraClass {
-        width: 80%;
+        width: 100%;
       }
     }
   `;
