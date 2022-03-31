@@ -6,17 +6,31 @@ export const style = (color) => {
     height: 100%;
     background: #d5ddeb;
     .headSec {
-      height: 10rem;
+      height: 3rem;
+      background-color: #eef2fb;
     }
-    .pbZone {
+    .bodySec {
+      background-color: #d6e8ff;
       width: 100%;
-      height: calc(100% - 12rem);
+      height: 100%;
       display: flex;
-      /* background-color: #5f5757; */
-      justify-content: center;
-      display: scroll;
-      .pbContainerExtraClass {
-        width: 100%;
+
+      .pbZone {
+        width: 80%;
+        height: calc(100% - 12rem);
+        display: flex;
+        /* background-color: #5f5757; */
+        justify-content: center;
+        overflow: scroll;
+        /* .pbContainerExtraClass {
+          width: 100%;
+          height: 100%;
+        } */
+      }
+      .pbOptions {
+        width: 20%;
+        height: 100%;
+        background-color: #e4e2e2;
       }
     }
   `;

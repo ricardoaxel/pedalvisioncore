@@ -55,7 +55,8 @@ const Pedalboard = ({ children, className }) => {
           >
             <img
               css={pedalStyle(pbAreaWidth, el.width, pbAreaHeight, el.height)}
-              src={Images[el.elementID]}
+              // src={"/../../assets/Images/rat.png"}
+              src={require(`../../assets/Images/${el.type}/${el.elementImage}`)}
               //To avoid the default HTML5 drag API
               draggable="false"
               alt=""

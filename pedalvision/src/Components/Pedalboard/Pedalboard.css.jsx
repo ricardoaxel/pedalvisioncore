@@ -10,10 +10,10 @@ export const Style = (pbAreaResponsiveHeight) => {
     display: flex;
     width: 100%;
     height: 100%;
-    overflow: scroll;
+    /* overflow: scroll; */
     .pedalboardAreaContainer {
       position: absolute;
-      background-color: green;
+      background-color: #ffffff;
       width: 100%;
       height: ${pbAreaResponsiveHeight + "px"};
     }

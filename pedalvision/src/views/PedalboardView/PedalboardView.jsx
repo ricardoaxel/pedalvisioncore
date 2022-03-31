@@ -5,8 +5,11 @@ export const PedalboardView = () => {
   return (
     <div css={style()}>
       <div className="headSec">Head</div>
-      <div className="pbZone">
-        <Pedalboard className={"pbContainerExtraClass"} />
+      <div className="bodySec">
+        <div className="pbZone">
+          <Pedalboard className={"pbContainerExtraClass"} />
+        </div>
+        <div className="pbOptions">pedalOptions</div>
       </div>
     </div>
   );
