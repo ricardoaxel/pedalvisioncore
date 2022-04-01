@@ -69,7 +69,7 @@ export const Style = () => {
       //SCROLLBAR
       scrollbar-width: thin;
       //Chrome & Others
-      ::-webkit-scrollbar {
+      /* ::-webkit-scrollbar {
         height: 7px;
         cursor: pointer;
       }
@@ -80,7 +80,7 @@ export const Style = () => {
 
       ::-webkit-scrollbar-corner {
         background: #000;
-      }
+      } */
     }
     body {
       @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital@1&display=swap");

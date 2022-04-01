@@ -17,15 +17,8 @@ export const style = (color) => {
 
       .pbZone {
         width: 80%;
-        height: calc(100% - 12rem);
-        display: flex;
-        /* background-color: #5f5757; */
-        justify-content: center;
-        overflow: scroll;
-        /* .pbContainerExtraClass {
-          width: 100%;
-          height: 100%;
-        } */
+        height: calc(100% - 3rem);
+        background-color: blue;
       }
       .pbOptions {
         width: 20%;

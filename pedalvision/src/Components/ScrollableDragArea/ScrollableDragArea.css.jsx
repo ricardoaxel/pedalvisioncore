@@ -11,13 +11,6 @@ export const Style = (pbAreaResponsiveHeight) => {
     width: 100%;
     height: 100%;
     overflow: scroll;
-    background-color: #c55e5e;
-    .pedalboardAreaContainer {
-      position: absolute;
-      background-color: #ffffff;
-      width: 2000px;
-      height: 4000px;
-    }
   `;
 };
 
