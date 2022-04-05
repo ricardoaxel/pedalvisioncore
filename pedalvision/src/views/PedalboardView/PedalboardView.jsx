@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Pedalboard } from "../../Components/Pedalboard";
-import { ScrollableDragArea } from "../../Components/ScrollableDragArea";
+import { PedalboardOptions } from "../../Components/PedalboardOptions/PedalboardOptions";
+
 import { style } from "./PedalboardView.css";
 export const PedalboardView = () => {
   return (
@@ -11,7 +12,9 @@ export const PedalboardView = () => {
           <Pedalboard className={"pbContainerExtraClass"} />
           {/* <ScrollableDragArea /> */}
         </div>
-        <div className="pbOptions"></div>
+        <div className="pbOptions">
+          <PedalboardOptions />
+        </div>
       </div>
     </div>
   );

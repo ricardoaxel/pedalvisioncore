@@ -1,3 +1,4 @@
 import { Pedalboard } from "./Pedalboard";
+import { PedalboardOptions } from "./PedalboardOptions";
 
-export { Pedalboard };
+export { Pedalboard, PedalboardOptions };

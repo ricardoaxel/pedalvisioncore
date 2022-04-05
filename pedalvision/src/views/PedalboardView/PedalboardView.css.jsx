@@ -4,7 +4,7 @@ export const style = (color) => {
     font-size: 24px;
     width: 100%;
     height: 100%;
-    background: #d5ddeb;
+    background: #11bb44;
     .headSec {
       height: 3rem;
       background-color: #eef2fb;
