@@ -6,7 +6,7 @@ export const exampleData = [
     width: 45,
     height: 20.6,
     type: "pedalboards",
-    elementID: "pedalboard",
+    elementID: "pedalboards",
     elementImage: "pb.png",
   },
   {

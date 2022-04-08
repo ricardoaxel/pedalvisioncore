@@ -1,9 +1,10 @@
-import { css } from "../../utils/GeneralImports";
+import { css } from "@emotion/react";
 import { useWindowSize } from "../../Hooks";
-import { useState, useEffect } from "react";
-export const Style = (pbAreaResponsiveHeight) => {
+export const Style = (areaWidth, areaHeight, scale) => {
   //This keep track of the windows change
   let windowSize = useWindowSize();
+  let responsiveWidth = areaWidth * scale + "px";
+  let responsiveHeight = areaHeight * scale + "px";
 
   return css`
     position: relative;
@@ -15,19 +16,21 @@ export const Style = (pbAreaResponsiveHeight) => {
     .pedalboardAreaContainer {
       position: absolute;
       background-color: #ffffff;
-      width: 2000px;
-      height: 4000px;
+      width: ${responsiveWidth};
+      height: ${responsiveHeight};
+      /* width: 4000px;
+      height: 3000px; */
     }
   `;
 };
 
 export const pedalStyle = (pedalWidth, pedalHeight, scale, pb) => {
-  let percentageWidth = pedalWidth * scale + "px";
-  let percentageHeight = pedalHeight * scale + "px";
-  // console.log(percentageWidth);
+  let responsiveWidth = pedalWidth * scale + "px";
+  let responsiveHeight = pedalHeight * scale + "px";
+  // console.log(responsiveWidth);
   return css`
-    width: ${percentageWidth};
-    height: ${percentageHeight};
+    width: ${responsiveWidth};
+    height: ${responsiveHeight};
     position: absolute;
     z-index: ${pb ? 1 : 300000000000};
     background-color: ${pb ? "white" : "red"};

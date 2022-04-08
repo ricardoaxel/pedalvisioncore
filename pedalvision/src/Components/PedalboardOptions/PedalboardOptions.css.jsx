@@ -1,5 +1,5 @@
-import { css } from "../../utils/GeneralImports";
-export const Style = (pbAreaResponsiveHeight) => {
+import { css } from "@emotion/react";
+export const Style = () => {
   return css`
     position: relative;
     display: flex;
@@ -7,7 +7,5 @@ export const Style = (pbAreaResponsiveHeight) => {
     height: 100%;
     overflow: scroll;
     background-color: #8f7474;
-    .elementsAddSection {
-    }
   `;
 };

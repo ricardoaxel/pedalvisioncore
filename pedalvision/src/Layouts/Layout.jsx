@@ -1,5 +1,5 @@
-import React from "react";
 import { Global } from "@emotion/react";
+import React from "react";
 import { Style } from "./Layout.css";
 import { MainStyle } from "./MainLayout.css";
 const Layout = ({ children, type }) => {
@@ -12,9 +12,8 @@ const Layout = ({ children, type }) => {
   }
   return (
     <>
-      {/* General styles for all the App */}
-      <Global styles={Style} />
       <main css={styleSelector}>{children}</main>
+      <Global styles={Style} />
     </>
   );
 };
