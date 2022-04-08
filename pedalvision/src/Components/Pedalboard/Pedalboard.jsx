@@ -1,5 +1,5 @@
 import { Style, pedalStyle } from "./Pedalboard.css";
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import Draggable from "react-draggable";
 import pedals from "../../utils/pedals.json";
 import pedalboards from "../../utils/pedalboards.json";
@@ -9,8 +9,11 @@ const Pedalboard = ({
   setPedalboardData,
   className,
   scale,
+  setScale,
   pbAreaSize,
+  fitToView,
 }) => {
+  const ref = useRef("");
   const handleEvent = (data, index) => {
     let auxObj = {
       ...pedalboardData[index],
@@ -23,10 +26,24 @@ const Pedalboard = ({
     setPedalboardData(auxElements);
   };
 
+  let pbAreaResponsiveWidth = ref.current.clientWidth;
+
+  useEffect(() => {
+    if (fitToView) {
+      // console.log(
+      //   ref.current.scrollWidth,
+      //   ref.current.offsetWidth,
+      //   ref.current.clientWidth
+      // );
+      setScale(pbAreaResponsiveWidth / pbAreaSize.width);
+    }
+  }, [fitToView, pbAreaSize.width, pbAreaResponsiveWidth]);
+
   return (
     <div
       css={Style(pbAreaSize.width, pbAreaSize.height, scale)}
       className={className}
+      ref={ref}
     >
       <div className="pedalboardAreaContainer">
         {pedalboardData.map((el, index) => {

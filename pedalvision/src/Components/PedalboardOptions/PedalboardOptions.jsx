@@ -11,6 +11,8 @@ export const PedalboardOptions = ({
   setScale,
   pbAreaSize,
   setPbAreaSize,
+  fitToView,
+  setFitToView,
 }) => {
   const addElement = (elementIndex, type) => {
     let elementTypeInfo;
@@ -63,6 +65,15 @@ export const PedalboardOptions = ({
   return (
     <div css={Style()} className={className}>
       <div className="elementsAddSection">
+        <label>
+          <input
+            type="checkbox"
+            value={fitToView}
+            onChange={() => setFitToView(!fitToView)}
+          />{" "}
+          Fit to View
+        </label>
+        <br />
         Scale (representation of inches per pixel):{scale}
         <input
           type="number"

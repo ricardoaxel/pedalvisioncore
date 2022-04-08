@@ -13,6 +13,7 @@ export const PedalboardView = () => {
   const [lastScale, setLastScale] = useState(18);
   const [scale, setScale] = useState(18);
   const [pbAreaSize, setPbAreaSize] = useState({ width: 60, height: 30 });
+  const [fitToView, setFitToView] = useState(false);
 
   useEffect(() => {
     // el.x * lastScale gives the position in pixels of last scale to know the
@@ -36,7 +37,9 @@ export const PedalboardView = () => {
             pedalboardData={pedalboardData}
             setPedalboardData={(data) => setPedalboardData(data)}
             scale={scale}
+            setScale={setScale}
             pbAreaSize={pbAreaSize}
+            fitToView={fitToView}
           />
           {/* <ScrollableDragArea /> */}
         </div>
@@ -48,6 +51,8 @@ export const PedalboardView = () => {
             setScale={setScale}
             pbAreaSize={pbAreaSize}
             setPbAreaSize={setPbAreaSize}
+            fitToView={fitToView}
+            setFitToView={setFitToView}
           />
         </div>
       </div>
