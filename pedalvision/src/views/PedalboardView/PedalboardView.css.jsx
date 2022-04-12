@@ -1,5 +1,6 @@
 import { css } from "@emotion/react";
-export const style = (color) => {
+
+export const Style = (hideOptions) => {
   return css`
     font-size: 24px;
     width: 100%;
@@ -16,12 +17,14 @@ export const style = (color) => {
       display: flex;
 
       .pbZone {
-        width: 80%;
+        transition: 0.5s;
+        width: ${hideOptions ? "100%" : "80%"};
         height: calc(100% - 3rem);
         background-color: blue;
       }
       .pbOptions {
-        width: 20%;
+        transition: 0.5s;
+        width: ${hideOptions ? "0%" : "20%"};
         height: 100%;
         background-color: #e4e2e2;
       }

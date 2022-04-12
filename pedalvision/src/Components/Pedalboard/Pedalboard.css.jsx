@@ -1,8 +1,6 @@
 import { css } from "@emotion/react";
-import { useWindowSize } from "../../Hooks";
 export const Style = (areaWidth, areaHeight, scale) => {
   //This keep track of the windows change
-  let windowSize = useWindowSize();
   let responsiveWidth = areaWidth * scale + "px";
   let responsiveHeight = areaHeight * scale + "px";
 
@@ -18,21 +16,26 @@ export const Style = (areaWidth, areaHeight, scale) => {
       background-color: #ffffff;
       width: ${responsiveWidth};
       height: ${responsiveHeight};
-      /* width: 4000px;
-      height: 3000px; */
+      transition: 0.3s;
     }
   `;
 };
 
-export const pedalStyle = (pedalWidth, pedalHeight, scale, pb) => {
+export const pedalStyle = (
+  pedalWidth,
+  pedalHeight,
+  scale,
+  pb,
+  showTransitions
+) => {
   let responsiveWidth = pedalWidth * scale + "px";
   let responsiveHeight = pedalHeight * scale + "px";
-  // console.log(responsiveWidth);
   return css`
     width: ${responsiveWidth};
     height: ${responsiveHeight};
     position: absolute;
     z-index: ${pb ? 1 : 300000000000};
     background-color: ${pb ? "white" : "red"};
+    transition: ${showTransitions ? ".3s;" : "0s;"};
   `;
 };

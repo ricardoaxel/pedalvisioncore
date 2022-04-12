@@ -12,10 +12,10 @@ const Pedalboard = ({
   setScale,
   pbAreaSize,
   fitToView,
+  hideOptions,
   availableWidth,
-  showTransitions,
-  setShowTransitions,
 }) => {
+  const ref = useRef("");
   const handleEvent = (data, index) => {
     let auxObj = {
       ...pedalboardData[index],
@@ -27,6 +27,8 @@ const Pedalboard = ({
     setPedalboardData(auxElements);
   };
 
+  let pbAreaResponsiveWidth = ref.current.clientWidth;
+
   useEffect(() => {
     if (fitToView) {
       // console.log(
@@ -34,16 +36,33 @@ const Pedalboard = ({
       //   ref.current.offsetWidth,
       //   ref.current.clientWidth
       // );
-      setScale(availableWidth / pbAreaSize.width);
+      if (hideOptions) {
+        setScale(fullBodyWidth / pbAreaSize.width);
+      } else {
+        setScale(pbAreaResponsiveWidth / pbAreaSize.width);
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fitToView, pbAreaSize.width, availableWidth]);
+  }, [fitToView, pbAreaSize.width, pbAreaResponsiveWidth, hideOptions]);
+
+  // useEffect(() => {
+  //   if (pbAreaResponsiveWidth !== undefined) {
+  //     console.log("entrando");
+  //     if (hideOptions) {
+  //       setScale(availableWidth / pbAreaSize.width);
+  //     } else {
+  //       setScale((availableWidth * 0.8) / pbAreaSize.width);
+  //     }
+  //   }
+
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [hideOptions]);
 
   return (
     <div
       css={Style(pbAreaSize.width, pbAreaSize.height, scale)}
       className={className}
-      // onMouseLeave={() => setShowTransitions(true)}
+      ref={ref}
     >
       <div className="pedalboardAreaContainer">
         {pedalboardData.map((el, index) => {
@@ -68,21 +87,17 @@ const Pedalboard = ({
               bounds="parent"
               // onDrag={(e, data) => handleEvent(e, data, el.id, index)}
               onStop={(e, data) => handleEvent(data, index)}
-              onDrag={() => setShowTransitions(false)}
             >
               <img
                 css={pedalStyle(
                   elementTypeInfo.width,
                   elementTypeInfo.Height,
-                  scale,
-                  false,
-                  showTransitions
+                  scale
                 )}
                 src={require(`../../assets/Images/${el.type}/${elementTypeInfo.Image}`)}
                 //To avoid the default HTML5 drag API
                 draggable="false"
                 alt=""
-                // onMouseEnter={() => setShowTransitions(false)}
               />
             </Draggable>
           );

@@ -13,6 +13,10 @@ export const PedalboardOptions = ({
   setPbAreaSize,
   fitToView,
   setFitToView,
+  hideOptions,
+  setHideOptions,
+  onMouseEnter,
+  setShowTransitions,
 }) => {
   const addElement = (elementIndex, type) => {
     let elementTypeInfo;
@@ -29,10 +33,7 @@ export const PedalboardOptions = ({
       Name: elementTypeInfo.Name,
       Brand: elementTypeInfo.Brand,
     };
-
     let auxElements = [...pedalboardData, auxObj];
-
-    localStorage.setItem("pedalboardData", JSON.stringify(auxElements));
     setPedalboardData(auxElements);
   };
 
@@ -63,7 +64,12 @@ export const PedalboardOptions = ({
   };
 
   return (
-    <div css={Style()} className={className}>
+    <div
+      css={Style()}
+      className={className}
+      onMouseEnter={() => setShowTransitions(true)}
+      onClick={() => setShowTransitions(true)}
+    >
       <div className="elementsAddSection">
         <label>
           <input
@@ -80,16 +86,18 @@ export const PedalboardOptions = ({
           name="lastName"
           value={scale}
           onChange={(e) => setScale(e.target.value)}
+          disabled={fitToView}
         />
-        Layout size:
         <br />
-        Width: <br />
+        Layout size: <br />
+        Width:
         <input
           type="number"
           name="lastName"
           value={pbAreaSize.width}
           onChange={(e) => changeLayoutSize(e.target.value, "width")}
         />
+        <br />
         Height:
         <input
           type="number"
@@ -117,6 +125,9 @@ export const PedalboardOptions = ({
             ))}
           </select>
         </div>
+      </div>
+      <div className="toggleBtn" onClick={() => setHideOptions(!hideOptions)}>
+        {">"}
       </div>
     </div>
   );
