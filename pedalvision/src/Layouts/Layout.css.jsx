@@ -14,12 +14,31 @@ export const Style = () => {
         U+FE2E-FE2F;
     }
     * {
+      //background-color: #c9ced8;
       margin: 0;
+      font-family: "Montserrat";
       //SCROLLBAR
       //Firefox
-      //SCROLLBAR
+      scrollbar-color: #c9ced8 #f5f5f5;
       scrollbar-width: thin;
-      font-family: "Montserrat";
+      //Chrome & Others
+      ::-webkit-scrollbar {
+        height: 9px;
+        width: 9px;
+        background: #f5f5f5;
+        cursor: pointer;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: #c9ced8;
+        cursor: pointer;
+        -webkit-border-radius: 1ex;
+        -webkit-box-shadow: 0px 1px 2px #c9ced8;
+      }
+
+      ::-webkit-scrollbar-corner {
+        background: #000;
+      }
     }
     body {
       /* @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital@1&display=swap"); */

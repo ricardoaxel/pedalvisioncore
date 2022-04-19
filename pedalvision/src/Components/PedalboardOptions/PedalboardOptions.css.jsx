@@ -10,7 +10,7 @@ export const Style = () => {
     .elementsAddSection {
       width: 100%;
       height: calc(100% - 3rem);
-      overflow: scroll;
+      overflow: auto;
       background-color: blue;
     }
     .toggleBtn {

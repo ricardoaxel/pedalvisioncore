@@ -15,8 +15,12 @@ export const PedalboardOptions = ({
   setFitToView,
   hideOptions,
   setHideOptions,
-  onMouseEnter,
   setShowTransitions,
+  availableWidth,
+  availableHeight,
+  pbScrollBarSize,
+  setAutofillEmpty,
+  autofillEmpty,
 }) => {
   const addElement = (elementIndex, type) => {
     let elementTypeInfo;
@@ -34,11 +38,30 @@ export const PedalboardOptions = ({
       Brand: elementTypeInfo.Brand,
     };
     let auxElements = [...pedalboardData, auxObj];
+    let changeSize = false;
+    let auxNewSize = { ...pbAreaSize };
+    if (elementTypeInfo.Width * scale + 5 > pbAreaSize.width * scale) {
+      auxNewSize = {
+        ...auxNewSize,
+        width: elementTypeInfo.Width + 10,
+      };
+      changeSize = true;
+    }
+    if (elementTypeInfo.Height * scale + 5 > pbAreaSize.height * scale) {
+      auxNewSize = {
+        ...auxNewSize,
+        height: elementTypeInfo.Height + 10,
+      };
+      changeSize = true;
+    }
+    if (changeSize) {
+      setPbAreaSize(auxNewSize);
+    }
     setPedalboardData(auxElements);
   };
 
-  const changeLayoutSize = (value, type) => {
-    let maxOfType = Math.max(
+  const getMaxSizeOfType = (type) =>
+    Math.max(
       ...pedalboardData.map((el) => {
         let elementTypeInfo;
         if (el.type === "pedals") {
@@ -50,7 +73,6 @@ export const PedalboardOptions = ({
             (pedal) => pedal.Name === el.Name && pedal.Brand === el.Brand
           )[0];
         }
-
         if (type === "width") {
           return elementTypeInfo.Width * scale + el.x;
         } else {
@@ -58,9 +80,47 @@ export const PedalboardOptions = ({
         }
       })
     );
+
+  const changeLayoutSize = (value, type) => {
+    let maxOfType = getMaxSizeOfType(type);
     if (value > maxOfType / scale) {
       setPbAreaSize({ ...pbAreaSize, [type]: value });
     }
+  };
+
+  const adjustLayoutToElements = (type = "both") => {
+    setPbAreaSize({
+      width:
+        type === "width" || type === "both"
+          ? getMaxSizeOfType("width") / scale + 1
+          : pbAreaSize.width,
+      height:
+        type === "height" || type === "both"
+          ? getMaxSizeOfType("height") / scale + 1
+          : pbAreaSize.height,
+    });
+  };
+
+  const fillEmptySpace = (type = "both") => {
+    setPbAreaSize({
+      width:
+        (type === "width" || type === "both") &&
+        pbAreaSize.width < availableWidth / scale
+          ? availableWidth / scale - pbScrollBarSize.width / scale
+          : pbAreaSize.width,
+      height:
+        (type === "height" || type === "both") &&
+        pbAreaSize.height < availableHeight / scale
+          ? availableHeight / scale - pbScrollBarSize.height / scale
+          : pbAreaSize.height,
+    });
+  };
+
+  const callAutoFillEmpty = () => {
+    if (!autofillEmpty) {
+      fillEmptySpace();
+    }
+    setAutofillEmpty(!autofillEmpty);
   };
 
   return (
@@ -90,6 +150,27 @@ export const PedalboardOptions = ({
         />
         <br />
         Layout size: <br />
+        Adjust to last elements:
+        <br />
+        <button onClick={() => adjustLayoutToElements()}>Both</button>
+        <button onClick={() => adjustLayoutToElements("width")}>Width</button>
+        <button onClick={() => adjustLayoutToElements("height")}>Height</button>
+        <br />
+        Fill empty space:
+        <br />
+        <button onClick={() => fillEmptySpace()}>Both</button>
+        <button onClick={() => fillEmptySpace("width")}>Width</button>
+        <button onClick={() => fillEmptySpace("height")}>Height</button>
+        <br />
+        <label>
+          <input
+            type="checkbox"
+            value={autofillEmpty}
+            onChange={() => callAutoFillEmpty()}
+          />{" "}
+          Autofill empty space
+          <br />
+        </label>
         Width:
         <input
           type="number"

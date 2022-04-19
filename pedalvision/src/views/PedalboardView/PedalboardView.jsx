@@ -28,15 +28,18 @@ export const PedalboardView = () => {
       : { width: 60, height: 30 }
   );
 
-  const [showTransitions, setShowTransitions] = useState(false);
-
   //Temporary options
   const [fitToView, setFitToView] = useState(false);
   const [hideOptions, setHideOptions] = useState(false);
+  const [showTransitions, setShowTransitions] = useState(false);
+  const [pbScrollBarSize, setPbScrollBarSize] = useState({
+    width: 0,
+    height: 0,
+  });
+  const [autofillEmpty, setAutofillEmpty] = useState(false);
 
   useEffect(() => {
-    // el.x * lastScale gives the position in pixels of last scale to know the
-    // new one we have to divide it into the new scale
+    // When the scale changes the elements positions are recalculated
     let auxelems = pedalboardData.map((el) => ({
       ...el,
       x: (el.x * scale) / lastScale,
@@ -59,6 +62,48 @@ export const PedalboardView = () => {
     localStorage.setItem("pbAreaSize", JSON.stringify(pbAreaSize));
   }, [pbAreaSize]);
 
+  let availableWidth =
+    windowSize !== undefined
+      ? hideOptions
+        ? windowSize.width
+        : windowSize.width * 0.8
+      : "";
+
+  const [availableHeight, setAvailableHeight] = useState(0);
+
+  useEffect(() => {
+    if (fitToView) {
+      setScale((availableWidth - pbScrollBarSize.width) / pbAreaSize.width);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fitToView, pbAreaSize.width, availableWidth]);
+
+  useEffect(() => {
+    if (autofillEmpty) {
+      if (fitToView) {
+        setPbAreaSize({
+          ...pbAreaSize,
+          height:
+            true && pbAreaSize.height < availableHeight / scale
+              ? availableHeight / scale - pbScrollBarSize.height / scale
+              : pbAreaSize.height,
+        });
+      } else {
+        setPbAreaSize({
+          width:
+            true && pbAreaSize.width < availableWidth / scale
+              ? availableWidth / scale - pbScrollBarSize.width / scale
+              : pbAreaSize.width,
+          height:
+            true && pbAreaSize.height < availableHeight / scale
+              ? availableHeight / scale - pbScrollBarSize.height / scale
+              : pbAreaSize.height,
+        });
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [availableWidth, scale]);
+
   return (
     <div css={Style(hideOptions)} ref={bodyRef}>
       <div className="headSec">Head</div>
@@ -73,17 +118,13 @@ export const PedalboardView = () => {
             pbAreaSize={pbAreaSize}
             fitToView={fitToView}
             hideOptions={hideOptions}
-            availableWidth={
-              windowSize !== undefined
-                ? hideOptions
-                  ? windowSize.width
-                  : windowSize.width * 0.8
-                : ""
-            }
+            availableWidth={availableWidth}
             showTransitions={showTransitions}
             setShowTransitions={setShowTransitions}
+            setPbScrollBarSize={setPbScrollBarSize}
+            setAvailableHeight={setAvailableHeight}
+            windowSize={windowSize}
           />
-          {/* <ScrollableDragArea /> */}
         </div>
         <PedalboardOptions
           className={"pbOptions"}
@@ -98,6 +139,11 @@ export const PedalboardView = () => {
           hideOptions={hideOptions}
           setHideOptions={setHideOptions}
           setShowTransitions={setShowTransitions}
+          pbScrollBarSize={pbScrollBarSize}
+          availableWidth={availableWidth}
+          availableHeight={availableHeight}
+          setAutofillEmpty={setAutofillEmpty}
+          autofillEmpty={autofillEmpty}
         />
       </div>
     </div>
