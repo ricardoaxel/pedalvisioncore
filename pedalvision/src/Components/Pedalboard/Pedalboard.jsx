@@ -50,6 +50,20 @@ const Pedalboard = ({
     }
   };
 
+  const rotatePBElement = (type, id, deg) => {
+    if (type === "index") {
+      let auxPB = [...pedalboardData];
+      auxPB[id]["orientation"] =
+        parseInt(auxPB[id]["orientation"]) + deg >= 360 ||
+        parseInt(auxPB[id]["orientation"]) + deg <= -360
+          ? 0
+          : parseInt(auxPB[id]["orientation"]) + deg;
+
+      setPedalboardData([...auxPB]);
+    } else {
+    }
+  };
+
   return (
     <div
       css={Style(pbAreaSize.width, pbAreaSize.height, scale, fitToView)}
@@ -79,6 +93,7 @@ const Pedalboard = ({
               handleEvent={handleEvent}
               setShowTransitions={setShowTransitions}
               deletePBElement={deletePBElement}
+              rotatePBElement={rotatePBElement}
             />
           );
         })}

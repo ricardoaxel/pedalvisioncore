@@ -10,34 +10,10 @@ export const Style = (
   let responsiveWidth = pedalWidth * scale + "px";
   let responsiveHeight = pedalHeight * scale + "px";
   let squareMargin = "3";
-  let horizontalOrientation =
-    Math.abs(data.orientation) === 0 || Math.abs(data.orientation) === 180;
-
-  let leftMarginForImage = 0;
-  let topMarginForImage = 0;
-
-  switch (data.orientation) {
-    case -270:
-    case 90:
-      leftMarginForImage = responsiveHeight;
-      break;
-    case 270:
-    case -90:
-      topMarginForImage = responsiveWidth;
-      break;
-    case 180:
-    case -180:
-      leftMarginForImage = responsiveWidth;
-      topMarginForImage = responsiveHeight;
-      break;
-
-    default:
-      break;
-  }
 
   return css`
-    width: ${horizontalOrientation ? responsiveWidth : responsiveHeight};
-    height: ${horizontalOrientation ? responsiveHeight : responsiveWidth};
+    width: ${responsiveWidth};
+    height: ${responsiveHeight};
     position: absolute;
     transform: ${"rotate(" + data.orientation + "deg);"};
     transition: ${showTransitions
@@ -57,8 +33,8 @@ export const Style = (
     }
 
     .borderSquare {
-      width: ${horizontalOrientation ? responsiveWidth : responsiveHeight};
-      height: ${horizontalOrientation ? responsiveHeight : responsiveWidth};
+      width: ${responsiveWidth};
+      height: ${responsiveHeight};
       position: absolute;
       padding: ${squareMargin + "px"};
       border-radius: 4px;
@@ -73,11 +49,8 @@ export const Style = (
     .elementImage {
       width: ${responsiveWidth};
       height: ${responsiveHeight};
-      left: ${leftMarginForImage};
-      top: ${topMarginForImage};
       position: absolute;
       transform: ${"rotate(" + data.orientation + "deg);"};
-      transform-origin: top left;
       transition: ${showTransitions
         ? "all .2s  ease, transform .4s ease-out;"
         : "0s;"};
@@ -108,6 +81,7 @@ export const Style = (
       padding: 4px;
       transition: all 0.2s ease, transform 0.4s ease-out;
       opacity: 0;
+      transform: ${"rotate(" + data.orientation + "deg);"};
       p {
         :hover {
           transition: all 0.2s ease, transform 0.4s ease-out;

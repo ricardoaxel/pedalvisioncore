@@ -36,6 +36,7 @@ export const PedalboardOptions = ({
       type: type,
       Name: elementTypeInfo.Name,
       Brand: elementTypeInfo.Brand,
+      orientation: 0,
     };
     let auxElements = [...pedalboardData, auxObj];
     let changeSize = false;
@@ -60,8 +61,8 @@ export const PedalboardOptions = ({
     setPedalboardData(auxElements);
   };
 
-  const getMaxSizeOfType = (type) =>
-    Math.max(
+  const getMaxSizeOfType = (type) => {
+    return Math.max(
       ...pedalboardData.map((el) => {
         let elementTypeInfo;
         if (el.type === "pedals") {
@@ -73,14 +74,21 @@ export const PedalboardOptions = ({
             (pedal) => pedal.Name === el.Name && pedal.Brand === el.Brand
           )[0];
         }
+        //Auxiliar variable to see the disposition of the pedal
+        let isHorizontal =
+          Math.abs(el.orientation) === 0 || Math.abs(el.orientation) === 180;
         if (type === "width") {
-          return elementTypeInfo.Width * scale + el.x;
+          return isHorizontal
+            ? elementTypeInfo.Width * scale + el.x
+            : elementTypeInfo.Height * scale + el.x;
         } else {
-          return elementTypeInfo.Height * scale + el.y;
+          return isHorizontal
+            ? elementTypeInfo.Height * scale + el.y
+            : elementTypeInfo.Width * scale + el.y;
         }
       })
     );
-
+  };
   const changeLayoutSize = (value, type) => {
     let maxOfType = getMaxSizeOfType(type);
     if (value > maxOfType / scale) {

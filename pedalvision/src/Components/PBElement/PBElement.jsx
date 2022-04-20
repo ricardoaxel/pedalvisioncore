@@ -11,6 +11,7 @@ const PBElement = ({
   handleEvent,
   setShowTransitions,
   deletePBElement,
+  rotatePBElement,
 }) => {
   const [showOptions, setShowOptions] = useState(false);
   return (
@@ -31,8 +32,8 @@ const PBElement = ({
           elementTypeInfo.Width,
           elementTypeInfo.Height,
           scale,
-          false,
-          showTransitions
+          showTransitions,
+          el
         )}
         draggable="false"
         onMouseOver={() => setShowOptions(true)}
@@ -45,17 +46,22 @@ const PBElement = ({
           draggable="false"
           alt=""
           // onMouseEnter={() => setShowTransitions(false)}
+          onMouseOut={() => {
+            setShowOptions(false);
+          }}
         />
 
-        <div
-          className={`options ${showOptions ? "show" : ""} `}
-          draggable="false"
-        >
-          <p>R</p>
-          <p onClick={() => deletePBElement("index", index)}>X</p>
+        <div className="borderSquare" draggable="false">
+          <div
+            className={`options ${showOptions ? "show" : ""} `}
+            draggable="false"
+            onMouseOver={() => setShowTransitions(true)}
+          >
+            <p onClick={() => rotatePBElement("index", index, -90)}>{"<-"}</p>
+            <p onClick={() => deletePBElement("index", index)}>X</p>
+            <p onClick={() => rotatePBElement("index", index, 90)}>{"->"}</p>
+          </div>
         </div>
-
-        <div className="borderSquare" draggable="false"></div>
       </div>
     </Draggable>
   );
