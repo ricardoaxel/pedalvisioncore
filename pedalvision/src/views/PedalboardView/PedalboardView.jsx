@@ -4,6 +4,7 @@ import { PedalboardOptions } from "../../Components/PedalboardOptions/Pedalboard
 import { exampleData } from "./exampleData";
 import { Style } from "./PedalboardView.css";
 import { useWindowSize } from "../../Hooks";
+
 export const PedalboardView = () => {
   let windowSize = useWindowSize();
   const bodyRef = useRef();
@@ -62,14 +63,15 @@ export const PedalboardView = () => {
     localStorage.setItem("pbAreaSize", JSON.stringify(pbAreaSize));
   }, [pbAreaSize]);
 
+  //We send the available dimensions to the child from here to have it before in case of
+  //calculating percentages and animations
   let availableWidth =
     windowSize !== undefined
       ? hideOptions
         ? windowSize.width
         : windowSize.width * 0.8
       : "";
-
-  const [availableHeight, setAvailableHeight] = useState(0);
+  let availableHeight = windowSize !== undefined ? windowSize.height - 50 : "";
 
   useEffect(() => {
     if (fitToView) {
@@ -119,11 +121,12 @@ export const PedalboardView = () => {
             fitToView={fitToView}
             hideOptions={hideOptions}
             availableWidth={availableWidth}
+            availableHeight={availableHeight}
             showTransitions={showTransitions}
             setShowTransitions={setShowTransitions}
             setPbScrollBarSize={setPbScrollBarSize}
-            setAvailableHeight={setAvailableHeight}
             windowSize={windowSize}
+            setPbAreaSize={setPbAreaSize}
           />
         </div>
         <PedalboardOptions

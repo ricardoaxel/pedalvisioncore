@@ -2,6 +2,7 @@ import { Style } from "./PedalboardOptions.css";
 import React from "react";
 import pedals from "../../utils/pedals.json";
 import pedalboards from "../../utils/pedalboards.json";
+import { getLatestPositions } from "../../utils/functions/getLatestsPositions";
 
 export const PedalboardOptions = ({
   className,
@@ -61,36 +62,8 @@ export const PedalboardOptions = ({
     setPedalboardData(auxElements);
   };
 
-  const getMaxSizeOfType = (type) => {
-    return Math.max(
-      ...pedalboardData.map((el) => {
-        let elementTypeInfo;
-        if (el.type === "pedals") {
-          elementTypeInfo = pedals.filter(
-            (pedal) => pedal.Name === el.Name && pedal.Brand === el.Brand
-          )[0];
-        } else {
-          elementTypeInfo = pedalboards.filter(
-            (pedal) => pedal.Name === el.Name && pedal.Brand === el.Brand
-          )[0];
-        }
-        //Auxiliar variable to see the disposition of the pedal
-        let isHorizontal =
-          Math.abs(el.orientation) === 0 || Math.abs(el.orientation) === 180;
-        if (type === "width") {
-          return isHorizontal
-            ? elementTypeInfo.Width * scale + el.x
-            : elementTypeInfo.Height * scale + el.x;
-        } else {
-          return isHorizontal
-            ? elementTypeInfo.Height * scale + el.y
-            : elementTypeInfo.Width * scale + el.y;
-        }
-      })
-    );
-  };
   const changeLayoutSize = (value, type) => {
-    let maxOfType = getMaxSizeOfType(type);
+    let maxOfType = getLatestPositions(pedalboardData, scale, type);
     if (value > maxOfType / scale) {
       setPbAreaSize({ ...pbAreaSize, [type]: value });
     }
@@ -100,28 +73,41 @@ export const PedalboardOptions = ({
     setPbAreaSize({
       width:
         type === "width" || type === "both"
-          ? getMaxSizeOfType("width") / scale + 1
+          ? getLatestPositions(pedalboardData, scale, "width") / scale + 1
           : pbAreaSize.width,
       height:
         type === "height" || type === "both"
-          ? getMaxSizeOfType("height") / scale + 1
+          ? getLatestPositions(pedalboardData, scale, "height") / scale + 1
           : pbAreaSize.height,
     });
   };
 
   const fillEmptySpace = (type = "both") => {
-    setPbAreaSize({
-      width:
-        (type === "width" || type === "both") &&
-        pbAreaSize.width < availableWidth / scale
-          ? availableWidth / scale - pbScrollBarSize.width / scale
-          : pbAreaSize.width,
-      height:
-        (type === "height" || type === "both") &&
-        pbAreaSize.height < availableHeight / scale
-          ? availableHeight / scale - pbScrollBarSize.height / scale
-          : pbAreaSize.height,
-    });
+    if (type === "both") {
+      setPbAreaSize({
+        width:
+          (type === "width" || type === "both") &&
+          pbAreaSize.width < availableWidth / scale
+            ? availableWidth / scale
+            : pbAreaSize.width,
+        height:
+          (type === "height" || type === "both") &&
+          pbAreaSize.height < availableHeight / scale
+            ? availableHeight / scale
+            : pbAreaSize.height,
+      });
+    } else {
+      setPbAreaSize({
+        width:
+          type === "width" && pbAreaSize.width < availableWidth / scale
+            ? availableWidth / scale - pbScrollBarSize.width / scale
+            : pbAreaSize.width,
+        height:
+          type === "height" && pbAreaSize.height < availableHeight / scale
+            ? availableHeight / scale - pbScrollBarSize.height / scale
+            : pbAreaSize.height,
+      });
+    }
   };
 
   const callAutoFillEmpty = () => {

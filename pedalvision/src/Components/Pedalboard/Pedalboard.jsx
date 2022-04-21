@@ -3,6 +3,7 @@ import React, { useRef, useEffect } from "react";
 import pedals from "../../utils/pedals.json";
 import pedalboards from "../../utils/pedalboards.json";
 import { PBElement } from "../PBElement/PBElement";
+import { getLatestPositions } from "../../utils/functions/getLatestsPositions";
 
 const Pedalboard = ({
   pedalboardData,
@@ -12,11 +13,12 @@ const Pedalboard = ({
   pbAreaSize,
   fitToView,
   availableWidth,
-  setAvailableHeight,
+  availableHeight,
   showTransitions,
   setShowTransitions,
   setPbScrollBarSize,
-  windowSize,
+  setPbAreaSize,
+  hideOptions,
 }) => {
   const localRef = useRef();
   const handleEvent = (data, index) => {
@@ -31,15 +33,11 @@ const Pedalboard = ({
   };
 
   useEffect(() => {
-    setAvailableHeight(localRef.current.offsetHeight);
-  }, [windowSize]);
-
-  useEffect(() => {
     setPbScrollBarSize({
       width: localRef.current.offsetWidth - localRef.current.clientWidth,
       height: localRef.current.offsetHeight - localRef.current.clientHeight,
     });
-  }, [availableWidth, pbAreaSize]);
+  }, [availableWidth, availableHeight, pbAreaSize, scale]);
 
   const deletePBElement = (type, id) => {
     if (type === "index") {
@@ -59,14 +57,39 @@ const Pedalboard = ({
           ? 0
           : parseInt(auxPB[id]["orientation"]) + deg;
 
+      let auxSize = {
+        width: getLatestPositions(pedalboardData, scale, "width") / scale + 1,
+        height: getLatestPositions(pedalboardData, scale, "height") / scale + 1,
+      };
+      setPbAreaSize({
+        width:
+          pbAreaSize.width > auxSize.width ? pbAreaSize.width : auxSize.width,
+        height:
+          pbAreaSize.height > auxSize.height
+            ? pbAreaSize.height
+            : auxSize.height,
+      });
       setPedalboardData([...auxPB]);
-    } else {
     }
   };
 
+  // console.log({
+  //   pbwi: pbAreaSize.width * scale + 1,
+  //   Availablewi: localRef.current.clientWidth,
+  //   pbhe: pbAreaSize.height * scale + 1,
+  //   availableHeight: localRef.current.clientHeight,
+  // });
   return (
     <div
-      css={Style(pbAreaSize.width, pbAreaSize.height, scale, fitToView)}
+      css={Style(
+        pbAreaSize.width,
+        pbAreaSize.height,
+        scale,
+        localRef.current &&
+          pbAreaSize.width * scale + 1 < localRef.current.clientWidth &&
+          localRef.current &&
+          pbAreaSize.height * scale + 1 <= localRef.current.clientHeight
+      )}
       className={className}
       ref={localRef}
     >
@@ -86,6 +109,7 @@ const Pedalboard = ({
           return (
             <PBElement
               el={el}
+              key={el.id}
               index={index}
               elementTypeInfo={elementTypeInfo}
               scale={scale}

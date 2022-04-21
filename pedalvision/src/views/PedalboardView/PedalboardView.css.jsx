@@ -7,7 +7,7 @@ export const Style = (hideOptions) => {
     height: 100%;
     background: #11bb44;
     .headSec {
-      height: 3rem;
+      height: 50px;
       background-color: #eef2fb;
     }
     .bodySec {
@@ -19,7 +19,7 @@ export const Style = (hideOptions) => {
       .pbZone {
         transition: 0.5s;
         width: ${hideOptions ? "100%" : "80%"};
-        height: calc(100% - 3rem);
+        height: calc(100% - 50px);
         background-color: blue;
       }
       .pbOptions {
