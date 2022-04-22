@@ -11,14 +11,11 @@ const Pedalboard = ({
   className,
   scale,
   pbAreaSize,
-  fitToView,
-  availableWidth,
-  availableHeight,
   showTransitions,
   setShowTransitions,
   setPbScrollBarSize,
   setPbAreaSize,
-  hideOptions,
+  // setPBLoaded,
 }) => {
   const localRef = useRef();
   const handleEvent = (data, index) => {
@@ -37,7 +34,8 @@ const Pedalboard = ({
       width: localRef.current.offsetWidth - localRef.current.clientWidth,
       height: localRef.current.offsetHeight - localRef.current.clientHeight,
     });
-  }, [availableWidth, availableHeight, pbAreaSize, scale]);
+    // setPBLoaded(true);
+  }, []);
 
   const deletePBElement = (type, id) => {
     if (type === "index") {
@@ -73,12 +71,15 @@ const Pedalboard = ({
     }
   };
 
-  // console.log({
-  //   pbwi: pbAreaSize.width * scale + 1,
-  //   Availablewi: localRef.current.clientWidth,
-  //   pbhe: pbAreaSize.height * scale + 1,
-  //   availableHeight: localRef.current.clientHeight,
-  // });
+  const updateElementLayer = (type, id, num) => {
+    if (type === "index") {
+      let auxPB = [...pedalboardData];
+      let newNum = parseInt(auxPB[id]["layer"]) + num;
+      auxPB[id]["layer"] = newNum < 1 ? 1 : newNum > 10 ? 10 : newNum;
+      setPedalboardData([...auxPB]);
+    }
+  };
+
   return (
     <div
       css={Style(
@@ -118,6 +119,7 @@ const Pedalboard = ({
               setShowTransitions={setShowTransitions}
               deletePBElement={deletePBElement}
               rotatePBElement={rotatePBElement}
+              updateElementLayer={updateElementLayer}
             />
           );
         })}

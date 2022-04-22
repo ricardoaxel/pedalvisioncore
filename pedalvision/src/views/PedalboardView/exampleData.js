@@ -18,5 +18,6 @@ export const exampleData = [
     Brand: "Pro Co",
     Name: "Rat",
     orientation: "0",
+    layer: 1,
   },
 ];

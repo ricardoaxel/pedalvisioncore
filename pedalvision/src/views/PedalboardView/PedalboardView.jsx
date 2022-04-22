@@ -24,7 +24,7 @@ export const PedalboardView = () => {
       : 18
   );
   const [pbAreaSize, setPbAreaSize] = useState(
-    JSON.parse(localStorage.getItem("scale"))
+    JSON.parse(localStorage.getItem("pbAreaSize"))
       ? JSON.parse(localStorage.getItem("pbAreaSize"))
       : { width: 60, height: 30 }
   );
@@ -41,13 +41,15 @@ export const PedalboardView = () => {
 
   useEffect(() => {
     // When the scale changes the elements positions are recalculated
-    let auxelems = pedalboardData.map((el) => ({
+    let auxelems = [...pedalboardData].map((el) => ({
       ...el,
       x: (el.x * scale) / lastScale,
       y: (el.y * scale) / lastScale,
     }));
-    setPedalboardData(auxelems);
+    setPedalboardData([...auxelems]);
     setLastScale(scale);
+    localStorage.setItem("scale", JSON.stringify(scale));
+    //
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [scale]);
 
@@ -56,10 +58,7 @@ export const PedalboardView = () => {
   }, [pedalboardData]);
 
   useEffect(() => {
-    localStorage.setItem("scale", JSON.stringify(scale));
-  }, [scale]);
-
-  useEffect(() => {
+    console.log({ pbAreaSize });
     localStorage.setItem("pbAreaSize", JSON.stringify(pbAreaSize));
   }, [pbAreaSize]);
 
@@ -104,30 +103,47 @@ export const PedalboardView = () => {
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [availableWidth, scale]);
+  }, [availableWidth]);
 
   return (
     <div css={Style(hideOptions)} ref={bodyRef}>
       <div className="headSec">Head</div>
       <div className="bodySec">
         <div className="pbZone">
-          <Pedalboard
-            className={""}
-            pedalboardData={pedalboardData}
-            setPedalboardData={(data) => setPedalboardData(data)}
-            scale={scale}
-            setScale={setScale}
-            pbAreaSize={pbAreaSize}
-            fitToView={fitToView}
-            hideOptions={hideOptions}
-            availableWidth={availableWidth}
-            availableHeight={availableHeight}
-            showTransitions={showTransitions}
-            setShowTransitions={setShowTransitions}
-            setPbScrollBarSize={setPbScrollBarSize}
-            windowSize={windowSize}
-            setPbAreaSize={setPbAreaSize}
-          />
+          {scale === lastScale ? (
+            <Pedalboard
+              className={""}
+              pedalboardData={pedalboardData}
+              setPedalboardData={(data) => setPedalboardData(data)}
+              scale={scale}
+              setScale={setScale}
+              pbAreaSize={pbAreaSize}
+              availableWidth={availableWidth}
+              availableHeight={availableHeight}
+              showTransitions={showTransitions}
+              setShowTransitions={setShowTransitions}
+              setPbScrollBarSize={setPbScrollBarSize}
+              windowSize={windowSize}
+              setPbAreaSize={setPbAreaSize}
+              // setPBLoaded={setPBLoaded}
+            />
+          ) : (
+            <Pedalboard
+              className={""}
+              pedalboardData={pedalboardData}
+              setPedalboardData={(data) => setPedalboardData(data)}
+              scale={scale}
+              setScale={setScale}
+              pbAreaSize={pbAreaSize}
+              availableWidth={availableWidth}
+              availableHeight={availableHeight}
+              showTransitions={showTransitions}
+              setShowTransitions={setShowTransitions}
+              setPbScrollBarSize={setPbScrollBarSize}
+              windowSize={windowSize}
+              setPbAreaSize={setPbAreaSize}
+            />
+          )}
         </div>
         <PedalboardOptions
           className={"pbOptions"}

@@ -30,6 +30,7 @@ export const PedalboardOptions = ({
     } else {
       elementTypeInfo = pedalboards[elementIndex];
     }
+
     let auxObj = {
       id: "id" + Math.random().toString(16).slice(2),
       x: 0,
@@ -38,7 +39,11 @@ export const PedalboardOptions = ({
       Name: elementTypeInfo.Name,
       Brand: elementTypeInfo.Brand,
       orientation: 0,
+      //Obtaining the last layer
+      layer: Math.max(...pedalboardData.map((el) => el.layer)),
     };
+
+    //This validation change the size of the actual area to work in case the element doesn't fit
     let auxElements = [...pedalboardData, auxObj];
     let changeSize = false;
     let auxNewSize = { ...pbAreaSize };
@@ -83,31 +88,18 @@ export const PedalboardOptions = ({
   };
 
   const fillEmptySpace = (type = "both") => {
-    if (type === "both") {
-      setPbAreaSize({
-        width:
-          (type === "width" || type === "both") &&
-          pbAreaSize.width < availableWidth / scale
-            ? availableWidth / scale
-            : pbAreaSize.width,
-        height:
-          (type === "height" || type === "both") &&
-          pbAreaSize.height < availableHeight / scale
-            ? availableHeight / scale
-            : pbAreaSize.height,
-      });
-    } else {
-      setPbAreaSize({
-        width:
-          type === "width" && pbAreaSize.width < availableWidth / scale
-            ? availableWidth / scale - pbScrollBarSize.width / scale
-            : pbAreaSize.width,
-        height:
-          type === "height" && pbAreaSize.height < availableHeight / scale
-            ? availableHeight / scale - pbScrollBarSize.height / scale
-            : pbAreaSize.height,
-      });
-    }
+    setPbAreaSize({
+      width:
+        (type === "width" || type === "both") &&
+        pbAreaSize.width < availableWidth / scale
+          ? availableWidth / scale - pbScrollBarSize.width / scale
+          : pbAreaSize.width,
+      height:
+        (type === "height" || type === "both") &&
+        pbAreaSize.height < availableHeight / scale
+          ? availableHeight / scale - pbScrollBarSize.height / scale
+          : pbAreaSize.height,
+    });
   };
 
   const callAutoFillEmpty = () => {

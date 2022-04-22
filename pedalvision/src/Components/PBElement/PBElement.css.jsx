@@ -1,3 +1,168 @@
+// import { css } from "@emotion/react";
+
+// export const Style = (
+//   pedalWidth,
+//   pedalHeight,
+//   scale,
+//   showTransitions,
+//   data
+// ) => {
+//   let responsiveWidth = pedalWidth * scale + "px";
+//   let responsiveHeight = pedalHeight * scale + "px";
+//   let horizontalOrientation =
+//     Math.abs(data.orientation) === 0 || Math.abs(data.orientation) === 180;
+//   let squareMargin = "3";
+
+//   let leftMarginForImage = 0;
+//   let topMarginForImage = 0;
+
+//   let rotationType = "bottp";
+
+//   if (rotationType === "top") {
+//     switch (data.orientation) {
+//       case -270:
+//       case 90:
+//         leftMarginForImage = responsiveHeight;
+//         break;
+//       case 270:
+//       case -90:
+//         topMarginForImage = responsiveWidth;
+//         break;
+//       case 180:
+//       case -180:
+//         leftMarginForImage = responsiveWidth;
+//         topMarginForImage = responsiveHeight;
+//         break;
+
+//       default:
+//         break;
+//     }
+//   } else {
+//     switch (data.orientation) {
+//       case -270:
+//       case 90:
+//         topMarginForImage = -parseInt(responsiveHeight) + "px";
+//         break;
+//       case 270:
+//       case -90:
+//         topMarginForImage =
+//           parseInt(responsiveWidth) - parseInt(responsiveHeight) + "px";
+//         leftMarginForImage = parseInt(responsiveHeight) + "px";
+//         break;
+//       case 180:
+//       case -180:
+//         leftMarginForImage = responsiveWidth;
+//         topMarginForImage = -parseInt(responsiveHeight) + "px";
+//         break;
+
+//       default:
+//         break;
+//     }
+//   }
+
+//   return css`
+//     width: ${horizontalOrientation ? responsiveWidth : responsiveHeight};
+//     height: ${horizontalOrientation ? responsiveHeight : responsiveWidth};
+//     background-color: red;
+//     position: absolute;
+//     /* transition: ${showTransitions
+//       ? "all .2s  ease, transform .4s ease-out;"
+//       : "0s;"}; */
+//     /* :hover {
+//       .borderSquare {
+//         border: 1px solid blue;
+//       }
+//     } */
+
+//     .borderSquare {
+//       width: ${horizontalOrientation ? responsiveWidth : responsiveHeight};
+//       height: ${horizontalOrientation ? responsiveHeight : responsiveWidth};
+//       position: absolute;
+//       padding: ${squareMargin + "px"};
+//       border-radius: 4px;
+//       margin-left: -${squareMargin * 1.25 + "px"};
+//       margin-top: -${squareMargin + "px"};
+//       border: 1px solid blue;
+//       transition: ${"all .2s, transform .4s ease-out;"};
+//     }
+//     .elementImage {
+//       width: ${responsiveWidth};
+//       height: ${responsiveHeight};
+//       left: ${leftMarginForImage};
+//       top: ${topMarginForImage};
+//       position: absolute;
+//       transform: ${"rotate(" + data.orientation + "deg);"};
+//       transform-origin: ${rotationType === "top" ? "top left" : "bottom left"};
+//       transition: ${"all .2s, transform .4s"};
+//       -webkit-backface-visibility: hidden; //Removes the browser antialising (blur) on Chrome
+//     }
+//     .options {
+//       width: 3rem;
+//       height: 1rem;
+//       /* position: absolute; */
+//       border-radius: 8px;
+//       bottom: -8px;
+//       right: -8px;
+//       border: 0px solid transparent;
+//       color: #000000;
+//       z-index: 100000000000000;
+//       display: flex;
+//       background: #f3f7fb;
+//       font-size: 1rem;
+//       -webkit-align-items: center;
+//       -webkit-box-align: center;
+//       -ms-flex-align: center;
+//       align-items: center;
+//       -webkit-box-pack: center;
+//       -ms-flex-pack: center;
+//       -webkit-justify-content: center;
+//       justify-content: center;
+//       padding: 4px;
+//       transition: all 0.2s ease, transform 0.4s ease-out;
+//       opacity: 1;
+//       p {
+//         :hover {
+//           transition: all 0.2s ease, transform 0.4s ease-out;
+//           background-color: grey;
+//           cursor: pointer;
+//         }
+//       }
+//     }
+//     .layer {
+//       /* position: absolute; */
+//       border-radius: 8px;
+//       top: -8px;
+//       right: -8px;
+//       border: 0px solid transparent;
+//       color: #000000;
+//       z-index: 100000000000000;
+//       display: flex;
+//       background: #f3f7fb;
+//       font-size: 1rem;
+//       -webkit-align-items: center;
+//       -webkit-box-align: center;
+//       -ms-flex-align: center;
+//       align-items: center;
+//       -webkit-box-pack: center;
+//       -ms-flex-pack: center;
+//       -webkit-justify-content: center;
+//       justify-content: center;
+//       padding: 4px;
+//       transition: all 0.2s ease, transform 0.4s ease-out;
+//       opacity: 1;
+//       flex-direction: column;
+//       p {
+//         :hover {
+//           transition: all 0.2s ease, transform 0.4s ease-out;
+//           background-color: grey;
+//           cursor: pointer;
+//         }
+//       }
+//     }
+//   `;
+// };
+
+// //BUENO
 import { css } from "@emotion/react";
 
 export const Style = (
@@ -16,43 +181,69 @@ export const Style = (
   let leftMarginForImage = 0;
   let topMarginForImage = 0;
 
-  switch (data.orientation) {
-    case -270:
-    case 90:
-      leftMarginForImage = responsiveHeight;
-      break;
-    case 270:
-    case -90:
-      topMarginForImage = responsiveWidth;
-      break;
-    case 180:
-    case -180:
-      leftMarginForImage = responsiveWidth;
-      topMarginForImage = responsiveHeight;
-      break;
+  let rotationType = "bottp";
 
-    default:
-      break;
+  if (rotationType === "top") {
+    switch (data.orientation) {
+      case -270:
+      case 90:
+        leftMarginForImage = responsiveHeight;
+        break;
+      case 270:
+      case -90:
+        topMarginForImage = responsiveWidth;
+        break;
+      case 180:
+      case -180:
+        leftMarginForImage = responsiveWidth;
+        topMarginForImage = responsiveHeight;
+        break;
+
+      default:
+        break;
+    }
+  } else {
+    switch (data.orientation) {
+      case -270:
+      case 90:
+        topMarginForImage = -parseInt(responsiveHeight) + "px";
+        break;
+      case 270:
+      case -90:
+        topMarginForImage =
+          parseInt(responsiveWidth) - parseInt(responsiveHeight) + "px";
+        leftMarginForImage = parseInt(responsiveHeight) + "px";
+        break;
+      case 180:
+      case -180:
+        leftMarginForImage = responsiveWidth;
+        topMarginForImage = -parseInt(responsiveHeight) + "px";
+        break;
+
+      default:
+        break;
+    }
   }
 
   return css`
     width: ${horizontalOrientation ? responsiveWidth : responsiveHeight};
     height: ${horizontalOrientation ? responsiveHeight : responsiveWidth};
     position: absolute;
-    transform: ${"rotate(" + data.orientation + "deg);"};
     transition: ${showTransitions
       ? "all .2s  ease, transform .4s ease-out;"
       : "0s;"};
-
+    z-index: ${data.layer};
     :hover,
     :focus,
     :active {
-      transition: ${showTransitions
-        ? "all .2s  ease, transform .4s ease-out;"
-        : "0s;"};
       .borderSquare {
-        transition: 0.15s;
         border: 1px solid blue;
+      }
+      .options {
+        opacity: 1;
+      }
+      .layer {
+        opacity: 1;
       }
     }
 
@@ -65,10 +256,7 @@ export const Style = (
       margin-left: -${squareMargin * 1.25 + "px"};
       margin-top: -${squareMargin + "px"};
       border: 0px solid transparent;
-      /* transform: ${"rotate(" + data.orientation + "deg);"}; */
-      transition: ${showTransitions
-        ? "all .2s  ease, transform .4s ease-out;"
-        : "0s;"};
+      transition: ${"all .2s, transform .4s ease-out;"};
     }
     .elementImage {
       width: ${responsiveWidth};
@@ -77,10 +265,8 @@ export const Style = (
       top: ${topMarginForImage};
       position: absolute;
       transform: ${"rotate(" + data.orientation + "deg);"};
-      transform-origin: top left;
-      transition: ${showTransitions
-        ? "all .2s  ease, transform .4s ease-out;"
-        : "0s;"};
+      transform-origin: ${rotationType === "top" ? "top left" : "bottom left"};
+      transition: ${"all .2s, transform .4s"};
       -webkit-backface-visibility: hidden; //Removes the browser antialising (blur) on Chrome
     }
 
@@ -116,9 +302,37 @@ export const Style = (
         }
       }
     }
-    .show {
+
+    .layer {
+      position: absolute;
+      border-radius: 8px;
+      top: -8px;
+      right: -8px;
+      border: 0px solid transparent;
+      color: #000000;
+      z-index: 100000000000000;
+      display: flex;
+      background: #f3f7fb;
+      font-size: 1rem;
+      -webkit-align-items: center;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      -webkit-box-pack: center;
+      -ms-flex-pack: center;
+      -webkit-justify-content: center;
+      justify-content: center;
+      padding: 4px;
       transition: all 0.2s ease, transform 0.4s ease-out;
-      opacity: 1;
+      opacity: 0;
+      flex-direction: column;
+      p {
+        :hover {
+          transition: all 0.2s ease, transform 0.4s ease-out;
+          background-color: grey;
+          cursor: pointer;
+        }
+      }
     }
   `;
 };
