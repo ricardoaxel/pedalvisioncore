@@ -1,4 +1,8 @@
 import { useDrag } from "react-dnd";
+const ItemTypes = {
+  BOX: "box",
+};
+
 const style = {
   position: "absolute",
   border: "1px dashed gray",
@@ -6,10 +10,7 @@ const style = {
   padding: "0.5rem 1rem",
   cursor: "move",
 };
-const ItemTypes = {
-  BOX: "box",
-};
-export const PBElement = ({ id, left, top, hideSourceOnDrag, children }) => {
+export const Box = ({ id, left, top, hideSourceOnDrag, children }) => {
   const [{ isDragging }, drag] = useDrag(
     () => ({
       type: ItemTypes.BOX,
