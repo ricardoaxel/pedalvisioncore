@@ -1,11 +1,9 @@
 import { useState, useEffect, useRef } from "react";
-import { Pedalboard } from "../../Components/PedalboardDrag";
+import { Pedalboard } from "../../Components/Pedalboard";
 import { PedalboardOptions } from "../../Components/PedalboardOptions/PedalboardOptions";
 import { exampleData } from "./exampleData";
 import { Style } from "./PedalboardView.css";
 import { useWindowSize } from "../../Hooks";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
 
 export const PedalboardView = () => {
   let windowSize = useWindowSize();
@@ -60,6 +58,7 @@ export const PedalboardView = () => {
   }, [pedalboardData]);
 
   useEffect(() => {
+    console.log({ pbAreaSize });
     localStorage.setItem("pbAreaSize", JSON.stringify(pbAreaSize));
   }, [pbAreaSize]);
 
@@ -111,7 +110,24 @@ export const PedalboardView = () => {
       <div className="headSec">Head</div>
       <div className="bodySec">
         <div className="pbZone">
-          <DndProvider backend={HTML5Backend}>
+          {scale === lastScale ? (
+            <Pedalboard
+              className={""}
+              pedalboardData={pedalboardData}
+              setPedalboardData={(data) => setPedalboardData(data)}
+              scale={scale}
+              setScale={setScale}
+              pbAreaSize={pbAreaSize}
+              availableWidth={availableWidth}
+              availableHeight={availableHeight}
+              showTransitions={showTransitions}
+              setShowTransitions={setShowTransitions}
+              setPbScrollBarSize={setPbScrollBarSize}
+              windowSize={windowSize}
+              setPbAreaSize={setPbAreaSize}
+              // setPBLoaded={setPBLoaded}
+            />
+          ) : (
             <Pedalboard
               className={""}
               pedalboardData={pedalboardData}
@@ -127,7 +143,7 @@ export const PedalboardView = () => {
               windowSize={windowSize}
               setPbAreaSize={setPbAreaSize}
             />
-          </DndProvider>
+          )}
         </div>
         <PedalboardOptions
           className={"pbOptions"}
