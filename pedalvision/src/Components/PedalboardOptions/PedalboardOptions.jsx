@@ -6,6 +6,8 @@ import { getLatestPositions } from "../../utils/functions/getLatestsPositions";
 
 export const PedalboardOptions = ({
   className,
+  pedalboardData,
+  setPedalboardData,
   scale,
   setScale,
   pbAreaSize,
@@ -20,8 +22,6 @@ export const PedalboardOptions = ({
   pbScrollBarSize,
   setAutofillEmpty,
   autofillEmpty,
-  boxes,
-  setBoxes,
 }) => {
   const addElement = (elementIndex, type) => {
     let elementTypeInfo;
@@ -33,19 +33,18 @@ export const PedalboardOptions = ({
 
     let auxObj = {
       id: "id" + Math.random().toString(16).slice(2),
-      left: 0,
-      top: 0,
+      x: 0,
+      y: 0,
       type: type,
       Name: elementTypeInfo.Name,
       Brand: elementTypeInfo.Brand,
       orientation: 0,
       //Obtaining the last layer
-      // layer: Math.max(...pedalboardData.map((el) => el.layer)),
+      layer: Math.max(...pedalboardData.map((el) => el.layer)),
     };
 
     //This validation change the size of the actual area to work in case the element doesn't fit
-    let auxPB = { ...boxes };
-    auxPB[Math.random().toString(16).slice(2)] = auxObj;
+    let auxElements = [...pedalboardData, auxObj];
     let changeSize = false;
     let auxNewSize = { ...pbAreaSize };
     if (elementTypeInfo.Width * scale + 5 > pbAreaSize.width * scale) {
@@ -65,11 +64,11 @@ export const PedalboardOptions = ({
     if (changeSize) {
       setPbAreaSize(auxNewSize);
     }
-    setBoxes(auxPB);
+    setPedalboardData(auxElements);
   };
 
   const changeLayoutSize = (value, type) => {
-    let maxOfType = getLatestPositions(boxes, scale, type);
+    let maxOfType = getLatestPositions(pedalboardData, scale, type);
     if (value > maxOfType / scale) {
       setPbAreaSize({ ...pbAreaSize, [type]: value });
     }
@@ -79,11 +78,11 @@ export const PedalboardOptions = ({
     setPbAreaSize({
       width:
         type === "width" || type === "both"
-          ? getLatestPositions(boxes, scale, "width") / scale + 1
+          ? getLatestPositions(pedalboardData, scale, "width") / scale + 1
           : pbAreaSize.width,
       height:
         type === "height" || type === "both"
-          ? getLatestPositions(boxes, scale, "height") / scale + 1
+          ? getLatestPositions(pedalboardData, scale, "height") / scale + 1
           : pbAreaSize.height,
     });
   };

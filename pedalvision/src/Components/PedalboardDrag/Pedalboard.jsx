@@ -2,11 +2,20 @@ import { Style } from "./Pedalboard.css";
 import React, { useRef, useEffect, useState, useCallback } from "react";
 import pedals from "../../utils/pedals.json";
 import pedalboards from "../../utils/pedalboards.json";
-import { PBElement } from "../PBElementDrag/PBElement";
+import { PBElement } from "../PBElement/PBElement";
 import { getLatestPositions } from "../../utils/functions/getLatestsPositions";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 import { useDrop } from "react-dnd";
 import update from "immutability-helper";
+import { Box } from "./Box";
 
+const styles = {
+  width: 300,
+  height: 300,
+  border: "1px solid black",
+  position: "relative",
+};
 const ItemTypes = {
   BOX: "box",
 };
@@ -20,8 +29,6 @@ export const Pedalboard = ({
   setShowTransitions,
   setPbScrollBarSize,
   setPbAreaSize,
-  boxes,
-  setBoxes,
 }) => {
   const localRef = useRef();
   useEffect(() => {
@@ -31,6 +38,17 @@ export const Pedalboard = ({
     });
     // setPBLoaded(true);
   }, []);
+
+  const handleEvent = (data, index) => {
+    let auxObj = {
+      ...pedalboardData[index],
+      x: data.lastX,
+      y: data.lastY,
+    };
+    let auxElements = [...pedalboardData];
+    auxElements[index] = auxObj;
+    setPedalboardData(auxElements);
+  };
 
   const deletePBElement = (type, id) => {
     if (type === "index") {
@@ -76,23 +94,10 @@ export const Pedalboard = ({
   };
 
   //////////////////
-
-  ///////////////
-  ////////////////////////////////////////////////////
-  // const [boxes, setBoxes] = useState({
-  //   c: {
-  //     id: "pedalsid1",
-  //     top: 0,
-  //     left: 0,
-  //     type: "pedals",
-  //     elementID: "rat",
-  //     Brand: "Pro Co",
-  //     Name: "Rat",
-  //     orientation: "0",
-  //     layer: 1,
-  //   },
-  // });
-
+  const [boxes, setBoxes] = useState({
+    a: { top: 20, left: 80, title: "Drag me around" },
+    b: { top: 180, left: 20, title: "Drag me too" },
+  });
   const moveBox = useCallback(
     (id, left, top) => {
       setBoxes(
@@ -138,44 +143,21 @@ export const Pedalboard = ({
         className="pedalboardAreaContainer"
         // style={styles}
       >
-        {Object.keys(boxes).map((key) => {
+        {/* {Object.keys(boxes).map((key) => {
           const { left, top, title } = boxes[key];
-          let locOtherData = boxes[key];
-          let elementTypeInfo;
-          if (locOtherData.type === "pedals") {
-            elementTypeInfo = pedals.filter(
-              (pedal) =>
-                pedal.Name === locOtherData.Name &&
-                pedal.Brand === locOtherData.Brand
-            )[0];
-          } else {
-            elementTypeInfo = pedalboards.filter(
-              (pedal) =>
-                pedal.Name === locOtherData.Name &&
-                pedal.Brand === locOtherData.Brand
-            )[0];
-          }
           return (
-            <PBElement
+            <Box
               key={key}
               id={key}
               left={left}
               top={top}
               hideSourceOnDrag={true}
-              otherData={boxes[key]}
-              elementTypeInfo={elementTypeInfo}
-              scale={scale}
-              showTransitions={showTransitions}
-              setShowTransitions={setShowTransitions}
-              deletePBElement={deletePBElement}
-              rotatePBElement={rotatePBElement}
-              updateElementLayer={updateElementLayer}
             >
               {title}
-            </PBElement>
+            </Box>
           );
-        })}
-        {/* {pedalboardData.map((el, index) => {
+        })} */}
+        {pedalboardData.map((el, index) => {
           let elementTypeInfo;
           if (el.type === "pedals") {
             elementTypeInfo = pedals.filter(
@@ -200,12 +182,9 @@ export const Pedalboard = ({
               deletePBElement={deletePBElement}
               rotatePBElement={rotatePBElement}
               updateElementLayer={updateElementLayer}
-              id={el.id}
-              left={el.x}
-              top={el.y}
             />
           );
-        })} */}
+        })}
       </div>
     </div>
   );

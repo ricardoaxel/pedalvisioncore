@@ -1,9 +1,8 @@
 import { css } from "@emotion/react";
-export const Style = (areaWidth, areaHeight, scale, showOverflow = true) => {
+export const Style = (areaWidth, areaHeight, scale, showOverflow) => {
   //This keep track of the windows change
   let responsiveWidth = areaWidth * scale + "px";
   let responsiveHeight = areaHeight * scale + "px";
-
   return css`
     position: relative;
     display: flex;
@@ -12,7 +11,6 @@ export const Style = (areaWidth, areaHeight, scale, showOverflow = true) => {
     /* overflow: auto; */
     overflow: scroll;
     background-color: #c55e5e;
-
     .pedalboardAreaContainer {
       position: absolute;
       background-color: #ffffff;
