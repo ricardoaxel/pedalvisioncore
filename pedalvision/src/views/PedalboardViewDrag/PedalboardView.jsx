@@ -1,9 +1,11 @@
 import { useState, useEffect, useRef } from "react";
-import { Pedalboard } from "../../Components/Pedalboard";
+import { Pedalboard } from "../../Components/PedalboardObjetosYDraggable/Pedalboard";
 import { PedalboardOptions } from "../../Components/PedalboardOptions/PedalboardOptions";
 import { exampleData } from "./exampleData";
 import { Style } from "./PedalboardView.css";
 import { useWindowSize } from "../../Hooks";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 export const PedalboardView = () => {
   let windowSize = useWindowSize();
@@ -38,18 +40,29 @@ export const PedalboardView = () => {
     height: 0,
   });
   const [autofillEmpty, setAutofillEmpty] = useState(false);
+  const [loader, setLoader] = useState(false);
 
   useEffect(() => {
-    // When the scale changes the elements positions are recalculated
-    let auxelems = [...pedalboardData].map((el) => ({
-      ...el,
-      x: (el.x * scale) / lastScale,
-      y: (el.y * scale) / lastScale,
-    }));
-    setPedalboardData([...auxelems]);
-    setLastScale(scale);
-    localStorage.setItem("scale", JSON.stringify(scale));
-    //
+    // console.log({ scale, lastScale });
+    if (scale !== lastScale) {
+      // When the scale changes the elements positions are recalculated
+      let auxelems = [...pedalboardData].map((el) => ({
+        ...el,
+        x: (el.x * scale) / lastScale,
+        y: (el.y * scale) / lastScale,
+      }));
+      setPedalboardData([...auxelems]);
+      setLastScale(scale);
+      localStorage.setItem("scale", JSON.stringify(scale));
+
+      let aux2 = { ...boxes };
+      Object.keys(boxes).map((key) => {
+        aux2[key].left = (aux2[key].left * scale) / lastScale;
+        aux2[key].top = (aux2[key].top * scale) / lastScale;
+      });
+      setBoxes(aux2);
+      //
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [scale]);
 
@@ -58,7 +71,6 @@ export const PedalboardView = () => {
   }, [pedalboardData]);
 
   useEffect(() => {
-    console.log({ pbAreaSize });
     localStorage.setItem("pbAreaSize", JSON.stringify(pbAreaSize));
   }, [pbAreaSize]);
 
@@ -105,12 +117,46 @@ export const PedalboardView = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [availableWidth]);
 
+  ///////BOXES
+  const [boxes, setBoxes] = useState(
+    JSON.parse(localStorage.getItem("boxes"))
+      ? JSON.parse(localStorage.getItem("boxes"))
+      : {
+          c: {
+            id: "pedalsid1",
+            top: 0,
+            left: 0,
+            type: "pedals",
+            elementID: "rat",
+            Brand: "Pro Co",
+            Name: "Rat",
+            orientation: "0",
+            layer: 1,
+          },
+          d: {
+            id: "pedalassid1",
+            top: 0,
+            left: 0,
+            type: "pedals",
+            elementID: "rat",
+            Brand: "Pro Co",
+            Name: "Rat",
+            orientation: "0",
+            layer: 1,
+          },
+        }
+  );
+
+  useEffect(() => {
+    localStorage.setItem("boxes", JSON.stringify(boxes));
+  }, [boxes]);
+
   return (
     <div css={Style(hideOptions)} ref={bodyRef}>
       <div className="headSec">Head</div>
       <div className="bodySec">
         <div className="pbZone">
-          {scale === lastScale ? (
+          <DndProvider backend={HTML5Backend}>
             <Pedalboard
               className={""}
               pedalboardData={pedalboardData}
@@ -125,25 +171,10 @@ export const PedalboardView = () => {
               setPbScrollBarSize={setPbScrollBarSize}
               windowSize={windowSize}
               setPbAreaSize={setPbAreaSize}
-              // setPBLoaded={setPBLoaded}
+              boxes={boxes}
+              setBoxes={setBoxes}
             />
-          ) : (
-            <Pedalboard
-              className={""}
-              pedalboardData={pedalboardData}
-              setPedalboardData={(data) => setPedalboardData(data)}
-              scale={scale}
-              setScale={setScale}
-              pbAreaSize={pbAreaSize}
-              availableWidth={availableWidth}
-              availableHeight={availableHeight}
-              showTransitions={showTransitions}
-              setShowTransitions={setShowTransitions}
-              setPbScrollBarSize={setPbScrollBarSize}
-              windowSize={windowSize}
-              setPbAreaSize={setPbAreaSize}
-            />
-          )}
+          </DndProvider>
         </div>
         <PedalboardOptions
           className={"pbOptions"}
@@ -163,6 +194,8 @@ export const PedalboardView = () => {
           availableHeight={availableHeight}
           setAutofillEmpty={setAutofillEmpty}
           autofillEmpty={autofillEmpty}
+          boxes={boxes}
+          setBoxes={setBoxes}
         />
       </div>
     </div>

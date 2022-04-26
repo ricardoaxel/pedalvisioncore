@@ -2,14 +2,10 @@ import { Style } from "./Pedalboard.css";
 import React, { useRef, useEffect, useState, useCallback } from "react";
 import pedals from "../../utils/pedals.json";
 import pedalboards from "../../utils/pedalboards.json";
-import { PBElement } from "../PBElementDrag/PBElement";
+import { PBElement } from "../PBElementObjetosYDraggable/PBElement";
 import { getLatestPositions } from "../../utils/functions/getLatestsPositions";
-import { useDrop } from "react-dnd";
 import update from "immutability-helper";
 
-const ItemTypes = {
-  BOX: "box",
-};
 export const Pedalboard = ({
   pedalboardData,
   setPedalboardData,
@@ -25,75 +21,18 @@ export const Pedalboard = ({
 }) => {
   const localRef = useRef();
   useEffect(() => {
+    let abortController = new AbortController();
     setPbScrollBarSize({
       width: localRef.current.offsetWidth - localRef.current.clientWidth,
       height: localRef.current.offsetHeight - localRef.current.clientHeight,
     });
+    return () => {
+      abortController.abort();
+    };
     // setPBLoaded(true);
   }, []);
 
-  const deletePBElement = (type, id) => {
-    if (type === "index") {
-      setPedalboardData([
-        ...pedalboardData.filter((pedalboardData, index) => index !== id),
-      ]);
-    } else {
-    }
-  };
-
-  const rotatePBElement = (type, id, deg) => {
-    if (type === "index") {
-      let auxPB = [...pedalboardData];
-      auxPB[id]["orientation"] =
-        parseInt(auxPB[id]["orientation"]) + deg >= 360 ||
-        parseInt(auxPB[id]["orientation"]) + deg <= -360
-          ? 0
-          : parseInt(auxPB[id]["orientation"]) + deg;
-
-      let auxSize = {
-        width: getLatestPositions(pedalboardData, scale, "width") / scale + 1,
-        height: getLatestPositions(pedalboardData, scale, "height") / scale + 1,
-      };
-      setPbAreaSize({
-        width:
-          pbAreaSize.width > auxSize.width ? pbAreaSize.width : auxSize.width,
-        height:
-          pbAreaSize.height > auxSize.height
-            ? pbAreaSize.height
-            : auxSize.height,
-      });
-      setPedalboardData([...auxPB]);
-    }
-  };
-
-  const updateElementLayer = (type, id, num) => {
-    if (type === "index") {
-      let auxPB = [...pedalboardData];
-      let newNum = parseInt(auxPB[id]["layer"]) + num;
-      auxPB[id]["layer"] = newNum < 1 ? 1 : newNum > 10 ? 10 : newNum;
-      setPedalboardData([...auxPB]);
-    }
-  };
-
-  //////////////////
-
-  ///////////////
-  ////////////////////////////////////////////////////
-  // const [boxes, setBoxes] = useState({
-  //   c: {
-  //     id: "pedalsid1",
-  //     top: 0,
-  //     left: 0,
-  //     type: "pedals",
-  //     elementID: "rat",
-  //     Brand: "Pro Co",
-  //     Name: "Rat",
-  //     orientation: "0",
-  //     layer: 1,
-  //   },
-  // });
-
-  const moveBox = useCallback(
+  const handleEvent = useCallback(
     (id, left, top) => {
       setBoxes(
         update(boxes, {
@@ -104,19 +43,6 @@ export const Pedalboard = ({
       );
     },
     [boxes, setBoxes]
-  );
-  const [, drop] = useDrop(
-    () => ({
-      accept: ItemTypes.BOX,
-      drop(item, monitor) {
-        const delta = monitor.getDifferenceFromInitialOffset();
-        const left = Math.round(item.left + delta.x);
-        const top = Math.round(item.top + delta.y);
-        moveBox(item.id, left, top);
-        return undefined;
-      },
-    }),
-    [moveBox]
   );
 
   return (
@@ -134,7 +60,7 @@ export const Pedalboard = ({
       ref={localRef}
     >
       <div
-        ref={drop}
+        // ref={drop}
         className="pedalboardAreaContainer"
         // style={styles}
       >
@@ -167,9 +93,10 @@ export const Pedalboard = ({
               scale={scale}
               showTransitions={showTransitions}
               setShowTransitions={setShowTransitions}
-              deletePBElement={deletePBElement}
-              rotatePBElement={rotatePBElement}
-              updateElementLayer={updateElementLayer}
+              // deletePBElement={deletePBElement}
+              // rotatePBElement={rotatePBElement}
+              // updateElementLayer={updateElementLayer}
+              handleEvent={handleEvent}
             >
               {title}
             </PBElement>

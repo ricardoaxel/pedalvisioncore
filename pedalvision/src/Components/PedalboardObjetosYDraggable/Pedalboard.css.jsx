@@ -1,5 +1,5 @@
 import { css } from "@emotion/react";
-export const Style = (areaWidth, areaHeight, scale, showOverflow = true) => {
+export const Style = (areaWidth, areaHeight, scale, showOverflow) => {
   //This keep track of the windows change
   let responsiveWidth = areaWidth * scale + "px";
   let responsiveHeight = areaHeight * scale + "px";
@@ -14,7 +14,7 @@ export const Style = (areaWidth, areaHeight, scale, showOverflow = true) => {
     background-color: #c55e5e;
 
     .pedalboardAreaContainer {
-      position: absolute;
+      position: relative;
       background-color: #ffffff;
       width: ${responsiveWidth};
       height: ${responsiveHeight};
