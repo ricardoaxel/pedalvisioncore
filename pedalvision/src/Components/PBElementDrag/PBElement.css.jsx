@@ -1,11 +1,11 @@
 import { css } from "@emotion/react";
-
 export const Style = (
   pedalWidth,
   pedalHeight,
   scale,
   showTransitions,
-  data
+  data,
+  hideOptions
 ) => {
   let responsiveWidth = pedalWidth * scale + "px";
   let responsiveHeight = pedalHeight * scale + "px";
@@ -68,12 +68,13 @@ export const Style = (
       ? "all .2s  ease, transform .4s ease-out;"
       : "0s;"};
     z-index: ${data.layer};
+
+    background-color: transparent;
+    cursor: move;
+
     :hover,
     :focus,
     :active {
-      transition: ${showTransitions
-        ? "all .2s  ease, transform .4s ease-out;"
-        : "0s;"};
       .borderSquare {
         border: 1px solid blue;
       }
@@ -95,6 +96,7 @@ export const Style = (
       margin-top: -${squareMargin + "px"};
       border: 0px solid transparent;
       transition: ${"all .2s, transform .4s ease-out;"};
+      display: ${hideOptions ? "none;" : "block;"};
     }
     .elementImage {
       width: ${responsiveWidth};
@@ -113,12 +115,11 @@ export const Style = (
       height: 1rem;
       position: absolute;
       border-radius: 8px;
-      bottom: -8px;
-      right: -8px;
+      bottom: -14px;
+      right: -12px;
       border: 0px solid transparent;
       color: #000000;
       z-index: 100000000000000;
-      display: flex;
       background: #f3f7fb;
       font-size: 1rem;
       -webkit-align-items: center;
@@ -132,6 +133,7 @@ export const Style = (
       padding: 4px;
       transition: all 0.2s ease, transform 0.4s ease-out;
       opacity: 0;
+      display: ${hideOptions ? "none;" : "flex;"};
       p {
         :hover {
           transition: all 0.2s ease, transform 0.4s ease-out;
@@ -142,10 +144,11 @@ export const Style = (
     }
 
     .layer {
+      font-size: 0.6rem;
       position: absolute;
       border-radius: 8px;
-      top: -8px;
-      right: -8px;
+      top: -25px;
+      left: -23px;
       border: 0px solid transparent;
       color: #000000;
       z-index: 100000000000000;
@@ -164,7 +167,9 @@ export const Style = (
       transition: all 0.2s ease, transform 0.4s ease-out;
       opacity: 0;
       flex-direction: column;
+      display: ${hideOptions ? "none;" : "block;"};
       p {
+        font-size: 0.8rem;
         :hover {
           transition: all 0.2s ease, transform 0.4s ease-out;
           background-color: grey;

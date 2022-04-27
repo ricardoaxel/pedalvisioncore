@@ -4,28 +4,33 @@ import pedalboards from "../pedalboards.json";
 //This functions returns the last position of an element
 export const getLatestPositions = (pedalboardData, scale, type) => {
   return Math.max(
-    ...pedalboardData.map((el) => {
+    ...Object.keys(pedalboardData).map((el) => {
       let elementTypeInfo;
-      if (el.type === "pedals") {
+      if (pedalboardData[el].type === "pedals") {
         elementTypeInfo = pedals.filter(
-          (pedal) => pedal.Name === el.Name && pedal.Brand === el.Brand
+          (pedal) =>
+            pedal.Name === pedalboardData[el].Name &&
+            pedal.Brand === pedalboardData[el].Brand
         )[0];
       } else {
         elementTypeInfo = pedalboards.filter(
-          (pedal) => pedal.Name === el.Name && pedal.Brand === el.Brand
+          (pedal) =>
+            pedal.Name === pedalboardData[el].Name &&
+            pedal.Brand === pedalboardData[el].Brand
         )[0];
       }
       //Auxiliar variable to see the disposition of the pedal
       let isHorizontal =
-        Math.abs(el.orientation) === 0 || Math.abs(el.orientation) === 180;
+        Math.abs(pedalboardData[el].orientation) === 0 ||
+        Math.abs(pedalboardData[el].orientation) === 180;
       if (type === "width") {
         return isHorizontal
-          ? elementTypeInfo.Width * scale + el.x
-          : elementTypeInfo.Height * scale + el.x;
+          ? elementTypeInfo.Width * scale + pedalboardData[el].left
+          : elementTypeInfo.Height * scale + pedalboardData[el].left;
       } else {
         return isHorizontal
-          ? elementTypeInfo.Height * scale + el.y
-          : elementTypeInfo.Width * scale + el.y;
+          ? elementTypeInfo.Height * scale + pedalboardData[el].top
+          : elementTypeInfo.Width * scale + pedalboardData[el].top;
       }
     })
   );

@@ -1,8 +1,8 @@
 import { Style } from "./PedalboardOptions.css";
-import React from "react";
+import React, { useState } from "react";
 import pedals from "../../utils/pedals.json";
 import pedalboards from "../../utils/pedalboards.json";
-import { getLatestPositions } from "../../utils/functions/getLatestsPositions";
+import { getLatestPositions } from "../../utils/functions/getLatestsPositions2";
 
 export const PedalboardOptions = ({
   className,
@@ -40,7 +40,10 @@ export const PedalboardOptions = ({
       Brand: elementTypeInfo.Brand,
       orientation: 0,
       //Obtaining the last layer
-      layer: Math.max(...pedalboardData.map((el) => el.layer)),
+      layer:
+        pedalboardData.length > 0
+          ? Math.max(...pedalboardData.map((el) => el.layer))
+          : 1,
     };
 
     //This validation change the size of the actual area to work in case the element doesn't fit
@@ -108,12 +111,17 @@ export const PedalboardOptions = ({
     }
     setAutofillEmpty(!autofillEmpty);
   };
+  const [hideElements, setHideElements] = useState(true);
 
   return (
     <div
       css={Style()}
       className={className}
-      onMouseEnter={() => setShowTransitions(true)}
+      onMouseEnter={() => {
+        setShowTransitions(true);
+        setHideElements(false);
+      }}
+      onMouseLeave={() => setHideElements(true)}
       onClick={() => setShowTransitions(true)}
     >
       <div className="elementsAddSection">
@@ -172,26 +180,32 @@ export const PedalboardOptions = ({
           value={pbAreaSize.height}
           onChange={(e) => changeLayoutSize(e.target.value, "height")}
         />
-        <div className="elementSel">
-          Pedalboards:
-          <select onChange={(e) => addElement(e.target.value, "pedalboards")}>
-            {pedalboards.map((pedalboard, index) => (
-              <option key={index} value={index}>
-                {pedalboard.Name}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="elementSel">
-          Pedals:
-          <select onChange={(e) => addElement(e.target.value, "pedals")}>
-            {pedals.map((pedal, index) => (
-              <option key={index} value={index}>
-                {pedal.Name}
-              </option>
-            ))}
-          </select>
-        </div>
+        {!hideElements && (
+          <>
+            <div className="elementSel">
+              Pedalboards:
+              <select
+                onChange={(e) => addElement(e.target.value, "pedalboards")}
+              >
+                {pedalboards.map((pedalboard, index) => (
+                  <option key={index} value={index}>
+                    {pedalboard.Name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="elementSel">
+              Pedals:
+              <select onChange={(e) => addElement(e.target.value, "pedals")}>
+                {pedals.map((pedal, index) => (
+                  <option key={index} value={index}>
+                    {pedal.Name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </>
+        )}
       </div>
       <div className="toggleBtn" onClick={() => setHideOptions(!hideOptions)}>
         {">"}

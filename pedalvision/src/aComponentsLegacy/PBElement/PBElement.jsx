@@ -1,5 +1,5 @@
 import { Style } from "./PBElement.css";
-import React from "react";
+import React, { useEffect } from "react";
 import Draggable from "react-draggable";
 
 const PBElement = ({
@@ -13,7 +13,16 @@ const PBElement = ({
   deletePBElement,
   rotatePBElement,
   updateElementLayer,
+  setHideElements,
 }) => {
+  useEffect(() => {
+    let abortController = new AbortController();
+
+    return () => {
+      abortController.abort();
+    };
+    // setPBLoaded(true);
+  }, []);
   return (
     <Draggable
       position={{
@@ -24,11 +33,12 @@ const PBElement = ({
       bounds="parent"
       onStop={(e, data) => handleEvent(data, index)}
       onStart={() => setShowTransitions(false)}
-      onDrag={() => setShowTransitions(false)}
+      // onDrag={() => setShowTransitions(false)}
       draggable="false"
-      scale={1}
     >
       <div
+        onMouseEnter={() => setHideElements(true)}
+        onMouseLeave={() => setHideElements(false)}
         css={Style(
           elementTypeInfo.Width,
           elementTypeInfo.Height,

@@ -1,9 +1,9 @@
 import { Style } from "./Pedalboard.css";
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState, useCallback } from "react";
 import pedals from "../../utils/pedals.json";
 import pedalboards from "../../utils/pedalboards.json";
 import { PBElement } from "../PBElement/PBElement";
-import { getLatestPositions } from "../../utils/functions/getLatestsPositions";
+import { getLatestPositions } from "../../utils/functions/getLatestsPositions2";
 
 const Pedalboard = ({
   pedalboardData,
@@ -15,7 +15,6 @@ const Pedalboard = ({
   setShowTransitions,
   setPbScrollBarSize,
   setPbAreaSize,
-  // setPBLoaded,
 }) => {
   const localRef = useRef();
   const handleEvent = (data, index) => {
@@ -30,10 +29,14 @@ const Pedalboard = ({
   };
 
   useEffect(() => {
+    let abortController = new AbortController();
     setPbScrollBarSize({
       width: localRef.current.offsetWidth - localRef.current.clientWidth,
       height: localRef.current.offsetHeight - localRef.current.clientHeight,
     });
+    return () => {
+      abortController.abort();
+    };
     // setPBLoaded(true);
   }, []);
 
