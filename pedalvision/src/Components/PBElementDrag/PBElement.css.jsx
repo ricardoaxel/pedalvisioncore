@@ -65,7 +65,7 @@ export const Style = (
     height: ${horizontalOrientation ? responsiveHeight : responsiveWidth};
     position: absolute;
     transition: ${showTransitions
-      ? "all .2s  ease, transform .4s ease-out;"
+      ? "all .2s  ease, transform .1s ease-out;"
       : "0s;"};
     z-index: ${data.layer};
 

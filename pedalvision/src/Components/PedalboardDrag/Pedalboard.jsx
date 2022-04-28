@@ -18,6 +18,7 @@ export const Pedalboard = ({
   pedalboardData,
   setPedalboardData,
   actualElement,
+  htmlDrag,
 }) => {
   const localRef = useRef();
   const movePedal = (direction, num) => {
@@ -225,6 +226,8 @@ export const Pedalboard = ({
               rotatePBElement={rotatePBElement}
               updateElementLayer={updateElementLayer}
               setActualElement={(val) => (actualElement.current = val)}
+              htmlDrag={htmlDrag}
+              handleEvent={moveBox}
             >
               {title}
             </PBElement>

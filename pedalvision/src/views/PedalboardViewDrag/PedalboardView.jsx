@@ -26,6 +26,7 @@ export const PedalboardView = () => {
       ? JSON.parse(localStorage.getItem("pbAreaSize"))
       : { width: 60, height: 30 }
   );
+  const [htmlDrag, setHtmlDrag] = useState(true);
   //Temporary options
   const [fitToView, setFitToView] = useState(false);
   const [hideOptions, setHideOptions] = useState(false);
@@ -48,8 +49,8 @@ export const PedalboardView = () => {
   let availableHeight = windowSize !== undefined ? windowSize.height - 50 : "";
 
   useEffect(() => {
-    localStorage.setItem("scale", JSON.stringify(12));
-  }, []);
+    localStorage.setItem("scale", JSON.stringify(scale));
+  }, [scale]);
 
   //Local storage saving
   useEffect(() => {
@@ -123,6 +124,7 @@ export const PedalboardView = () => {
               pedalboardData={pedalboardData}
               setPedalboardData={setPedalboardData}
               actualElement={actualElement}
+              htmlDrag={htmlDrag}
             />
           </DndProvider>
         </div>
@@ -145,6 +147,8 @@ export const PedalboardView = () => {
           pedalboardData={pedalboardData}
           setPedalboardData={setPedalboardData}
           actualElement={actualElement}
+          htmlDrag={htmlDrag}
+          setHtmlDrag={setHtmlDrag}
         />
       </div>
     </div>
