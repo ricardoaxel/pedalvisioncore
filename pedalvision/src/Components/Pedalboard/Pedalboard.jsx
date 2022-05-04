@@ -2,7 +2,7 @@ import { Style } from "./Pedalboard.css";
 import React, { useRef, useEffect, useState, useCallback } from "react";
 import pedals from "../../utils/pedals.json";
 import pedalboards from "../../utils/pedalboards.json";
-import { PBElement } from "../PBElementDrag/PBElement";
+import { PBElement } from "../PBElement/PBElement";
 import { getLatestPositions } from "../../utils/functions/getLatestsPositions";
 import { useDrop } from "react-dnd";
 import update from "immutability-helper";
@@ -19,6 +19,7 @@ export const Pedalboard = ({
   setPedalboardData,
   actualElement,
   htmlDrag,
+  unitFactor,
 }) => {
   const localRef = useRef();
   const movePedal = (direction, num) => {
@@ -187,12 +188,14 @@ export const Pedalboard = ({
         localRef.current &&
           pbAreaSize.width * scale + 1 < localRef.current.clientWidth &&
           localRef.current &&
-          pbAreaSize.height * scale + 1 <= localRef.current.clientHeight
+          pbAreaSize.height * scale + 1 <= localRef.current.clientHeight,
+        unitFactor
       )}
       className={className}
       ref={localRef}
     >
       <div ref={drop} className="pedalboardAreaContainer">
+        <div className="gridArea"></div>
         {Object.keys(pedalboardData).map((key) => {
           const { left, top, title } = pedalboardData[key];
           let locOtherData = pedalboardData[key];

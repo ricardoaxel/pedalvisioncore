@@ -10,21 +10,22 @@ export const PedalboardOptions = ({
   setScale,
   pbAreaSize,
   setPbAreaSize,
-  fitToView,
-  setFitToView,
+  fitToWidth,
+  setFitToWidth,
+  fitToHeight,
+  setFitToHeight,
   hideOptions,
   setHideOptions,
   setShowTransitions,
-  pbScrollBarSize,
-  availableWidth,
-  availableHeight,
   setAutofillEmpty,
   autofillEmpty,
   pedalboardData,
   setPedalboardData,
-  actualElement,
   htmlDrag,
   setHtmlDrag,
+  fillEmptySpace,
+  unitFactor,
+  setUnitFactor,
 }) => {
   const addElement = (elementIndex, type) => {
     let elementTypeInfo;
@@ -76,38 +77,24 @@ export const PedalboardOptions = ({
   };
 
   const adjustLayoutToElements = (type = "both") => {
+    //The use of unitFactor is to adjust to the actual type of units
     setPbAreaSize({
       width:
         type === "width" || type === "both"
-          ? getLatestPositions(pedalboardData, scale, "width") / scale + 1
+          ? Math.floor(
+              (getLatestPositions(pedalboardData, scale, "width") / scale + 1) *
+                unitFactor
+            ) / unitFactor
           : pbAreaSize.width,
       height:
         type === "height" || type === "both"
-          ? getLatestPositions(pedalboardData, scale, "height") / scale + 1
+          ? Math.floor(
+              (getLatestPositions(pedalboardData, scale, "height") / scale +
+                1) *
+                unitFactor
+            ) / unitFactor
           : pbAreaSize.height,
     });
-  };
-
-  const fillEmptySpace = (type = "both") => {
-    setPbAreaSize({
-      width:
-        (type === "width" || type === "both") &&
-        pbAreaSize.width < availableWidth / scale
-          ? availableWidth / scale - pbScrollBarSize.width / scale
-          : pbAreaSize.width,
-      height:
-        (type === "height" || type === "both") &&
-        pbAreaSize.height < availableHeight / scale
-          ? availableHeight / scale - pbScrollBarSize.height / scale
-          : pbAreaSize.height,
-    });
-  };
-
-  const callAutoFillEmpty = () => {
-    if (!autofillEmpty) {
-      fillEmptySpace();
-    }
-    setAutofillEmpty(!autofillEmpty);
   };
   const [hideElements, setHideElements] = useState(true);
   return (
@@ -134,10 +121,25 @@ export const PedalboardOptions = ({
         <label>
           <input
             type="checkbox"
-            value={fitToView}
-            onChange={() => setFitToView(!fitToView)}
+            checked={fitToWidth}
+            onChange={() => {
+              setFitToWidth(!fitToWidth);
+              setFitToHeight(false);
+            }}
           />{" "}
-          Fit to View
+          Fit to View width
+        </label>
+        <br />
+        <label>
+          <input
+            type="checkbox"
+            checked={fitToHeight}
+            onChange={() => {
+              setFitToHeight(!fitToHeight);
+              setFitToWidth(false);
+            }}
+          />{" "}
+          Fit to View height
         </label>
         <br />
         Scale (representation of inches per pixel):{scale}
@@ -146,8 +148,27 @@ export const PedalboardOptions = ({
           name="lastName"
           value={scale}
           onChange={(e) => setScale(e.target.value)}
-          disabled={fitToView}
+          disabled={fitToWidth || fitToHeight}
         />
+        <br />
+        Units:{scale}
+        <br />
+        <label>
+          <input
+            type="checkbox"
+            checked={unitFactor === "1"}
+            onChange={() => setUnitFactor("1")}
+          />{" "}
+          in
+        </label>
+        <label>
+          <input
+            type="checkbox"
+            checked={unitFactor === "2.54"}
+            onChange={() => setUnitFactor("2.54")}
+          />{" "}
+          cm
+        </label>
         <br />
         Layout size: <br />
         Adjust to last elements:
@@ -166,7 +187,7 @@ export const PedalboardOptions = ({
           <input
             type="checkbox"
             value={autofillEmpty}
-            onChange={() => callAutoFillEmpty()}
+            onChange={() => setAutofillEmpty(!autofillEmpty)}
           />{" "}
           Autofill empty space
           <br />
@@ -175,16 +196,20 @@ export const PedalboardOptions = ({
         <input
           type="number"
           name="lastName"
-          value={pbAreaSize.width}
-          onChange={(e) => changeLayoutSize(e.target.value, "width")}
+          value={(pbAreaSize.width * unitFactor).toFixed(2)}
+          onChange={(e) => {
+            changeLayoutSize(e.target.value / unitFactor, "width");
+          }}
         />
         <br />
         Height:
         <input
           type="number"
           name="lastName"
-          value={pbAreaSize.height}
-          onChange={(e) => changeLayoutSize(e.target.value, "height")}
+          value={(pbAreaSize.height * unitFactor).toFixed(2)}
+          onChange={(e) =>
+            changeLayoutSize(e.target.value / unitFactor, "height")
+          }
         />
         {(!hideElements || htmlDrag) && (
           <>

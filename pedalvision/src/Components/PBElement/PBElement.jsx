@@ -48,10 +48,12 @@ export const PBElement = ({
           otherData,
           hideOptions
         )}
-        style={{ left: left, top, touchAction: "none" }}
+        style={{ left: left, top: top, touchAction: "none" }}
         ref={drag}
         onMouseLeave={() => setHideOptions(false)}
         onDragStart={() => setHideOptions(true)}
+        // onDragLeave={() => setHideOptions(false)}
+        // onDragEnd={() => setHideOptions(false)}
         onClick={() =>
           setActualElement({
             id: id,
