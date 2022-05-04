@@ -2,9 +2,7 @@ import { useState } from "react";
 import { useDrag } from "react-dnd";
 import { Style } from "./PBElement.css";
 import Draggable from "react-draggable";
-const ItemTypes = {
-  BOX: "box",
-};
+
 export const PBElement = ({
   id,
   left,
@@ -14,18 +12,18 @@ export const PBElement = ({
   elementTypeInfo,
   scale,
   showTransitions,
+  setShowTransitions,
   rotatePBElement,
   deletePBElement,
   updateElementLayer,
   setActualElement,
   htmlDrag,
   handleEvent,
-  setShowTransitions,
 }) => {
   const [hideOptions, setHideOptions] = useState(false);
   const [{ isDragging }, drag] = useDrag(
     () => ({
-      type: ItemTypes.BOX,
+      type: "box",
       item: { id, left, top, elementTypeInfo },
       collect: (monitor) => ({
         isDragging: monitor.isDragging(),

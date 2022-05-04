@@ -32,12 +32,12 @@ export const PedalboardView = () => {
   const [fitToHeight, setFitToHeight] = useState(false);
   const [hideOptions, setHideOptions] = useState(false);
   const [showTransitions, setShowTransitions] = useState(false);
+  const [autofillEmpty, setAutofillEmpty] = useState(false);
+  const [unitFactor, setUnitFactor] = useState("1");
   const [pbScrollBarSize, setPbScrollBarSize] = useState({
     width: 0,
     height: 0,
   });
-  const [autofillEmpty, setAutofillEmpty] = useState(false);
-  const [unitFactor, setUnitFactor] = useState("1");
   const actualElement = useRef();
 
   //We send the available dimensions to the child from here to have it before in case we need
@@ -154,9 +154,9 @@ export const PedalboardView = () => {
               setShowTransitions={setShowTransitions}
               setPbScrollBarSize={setPbScrollBarSize}
               setPbAreaSize={setPbAreaSize}
+              pedalboardData={pedalboardData}
               availableWidth={availableWidth}
               availableHeight={availableHeight}
-              pedalboardData={pedalboardData}
               setPedalboardData={setPedalboardData}
               actualElement={actualElement}
               htmlDrag={htmlDrag}
@@ -177,19 +177,16 @@ export const PedalboardView = () => {
           hideOptions={hideOptions}
           setHideOptions={setHideOptions}
           setShowTransitions={setShowTransitions}
-          pbScrollBarSize={pbScrollBarSize}
-          availableWidth={availableWidth}
-          availableHeight={availableHeight}
-          setAutofillEmpty={setAutofillEmpty}
           autofillEmpty={autofillEmpty}
+          setAutofillEmpty={setAutofillEmpty}
           pedalboardData={pedalboardData}
           setPedalboardData={setPedalboardData}
-          actualElement={actualElement}
           htmlDrag={htmlDrag}
           setHtmlDrag={setHtmlDrag}
           fillEmptySpace={fillEmptySpace}
           unitFactor={unitFactor}
           setUnitFactor={setUnitFactor}
+          actualElement={actualElement}
         />
       </div>
     </div>

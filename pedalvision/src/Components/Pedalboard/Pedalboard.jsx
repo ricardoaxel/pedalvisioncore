@@ -163,7 +163,7 @@ export const Pedalboard = ({
         })
       );
     },
-    [pedalboardData, setPedalboardData]
+    [pedalboardData]
   );
   const [, drop] = useDrop(
     () => ({
@@ -225,8 +225,8 @@ export const Pedalboard = ({
               scale={scale}
               showTransitions={showTransitions}
               setShowTransitions={setShowTransitions}
-              deletePBElement={deletePBElement}
               rotatePBElement={rotatePBElement}
+              deletePBElement={deletePBElement}
               updateElementLayer={updateElementLayer}
               setActualElement={(val) => (actualElement.current = val)}
               htmlDrag={htmlDrag}
