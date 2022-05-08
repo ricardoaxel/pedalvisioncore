@@ -1,9 +1,14 @@
 import { Style } from "./Pedalboard.css";
-import React, { useRef, useEffect, useState, useCallback } from "react";
+import React, { useRef, useEffect, useCallback } from "react";
 import pedals from "../../utils/pedals.json";
 import pedalboards from "../../utils/pedalboards.json";
 import { PBElement } from "../PBElement/PBElement";
-import { getLatestPositions } from "../../utils/functions/getLatestsPositions";
+import {
+  deletePBElement,
+  escFunction,
+  rotatePBElement,
+  updateElementLayer,
+} from "./functions";
 import { useDrop } from "react-dnd";
 import update from "immutability-helper";
 
@@ -22,108 +27,19 @@ export const Pedalboard = ({
   unitFactor,
 }) => {
   const localRef = useRef();
-  const movePedal = (direction, num) => {
-    let auxPB = { ...JSON.parse(localStorage.getItem("pedalboardData")) };
-    if (
-      auxPB[actualElement.current.id][direction] +
-        num * JSON.parse(localStorage.getItem("scale")) <
-      0
-    ) {
-      num = 0;
-    }
-    let isHorizontal =
-      Math.abs(actualElement.current.particularInfo.orientation) === 0 ||
-      Math.abs(actualElement.current.particularInfo.orientation) === 180;
-    if (
-      auxPB[actualElement.current.id][direction] +
-        num * JSON.parse(localStorage.getItem("scale")) +
-        actualElement.current.elTypeInfo[
-          direction === "top"
-            ? isHorizontal
-              ? "Height"
-              : "Width"
-            : isHorizontal
-            ? "Width"
-            : "Height"
-        ] *
-          JSON.parse(localStorage.getItem("scale")) >
-      JSON.parse(localStorage.getItem("pbAreaSize"))[
-        direction === "top" ? "height" : "width"
-      ] *
-        JSON.parse(localStorage.getItem("scale"))
-    ) {
-      num = 0;
-    }
-    auxPB[actualElement.current.id][direction] =
-      auxPB[actualElement.current.id][direction] +
-      num * JSON.parse(localStorage.getItem("scale"));
 
-    setPedalboardData({ ...auxPB });
-  };
-
-  const escFunction = (event) => {
-    if (actualElement.current !== undefined) {
-      switch (event.key) {
-        case "ArrowLeft":
-          movePedal("left", -1);
-          break;
-        case "ArrowRight":
-          movePedal("left", 1);
-          break;
-        case "ArrowUp":
-          movePedal("top", -1);
-          break;
-        case "ArrowDown":
-          movePedal("top", 1);
-          break;
-        default:
-          break;
-      }
-    }
-  };
   useEffect(() => {
     setPbScrollBarSize({
       width: localRef.current.offsetWidth - localRef.current.clientWidth,
       height: localRef.current.offsetHeight - localRef.current.clientHeight,
     });
 
-    document.addEventListener("keydown", escFunction, false);
+    document.addEventListener(
+      "keydown",
+      (e) => escFunction(e, actualElement, setPedalboardData),
+      false
+    );
   }, []);
-
-  const deletePBElement = (id) => {
-    let auxPBData = { ...pedalboardData };
-    delete auxPBData[id];
-
-    setPedalboardData({ ...auxPBData });
-  };
-
-  const rotatePBElement = (id, deg) => {
-    let auxPB = { ...pedalboardData };
-    auxPB[id]["orientation"] =
-      parseInt(auxPB[id]["orientation"]) + deg >= 360 ||
-      parseInt(auxPB[id]["orientation"]) + deg <= -360
-        ? 0
-        : parseInt(auxPB[id]["orientation"]) + deg;
-
-    let auxSize = {
-      width: getLatestPositions(auxPB, scale, "width") / scale + 1,
-      height: getLatestPositions(auxPB, scale, "height") / scale + 1,
-    };
-    setPbAreaSize({
-      width:
-        pbAreaSize.width > auxSize.width ? pbAreaSize.width : auxSize.width,
-      height:
-        pbAreaSize.height > auxSize.height ? pbAreaSize.height : auxSize.height,
-    });
-    setPedalboardData({ ...auxPB });
-  };
-
-  const updateElementLayer = (id, num) => {
-    let auxPB = { ...pedalboardData };
-    let newNum = parseInt(auxPB[id]["layer"]) + num;
-    auxPB[id]["layer"] = newNum < 1 ? 1 : newNum > 10 ? 10 : newNum;
-    setPedalboardData({ ...auxPB });
-  };
 
   const moveBox = useCallback(
     (id, left, top, elementTypeInfo) => {
@@ -225,9 +141,23 @@ export const Pedalboard = ({
               scale={scale}
               showTransitions={showTransitions}
               setShowTransitions={setShowTransitions}
-              rotatePBElement={rotatePBElement}
-              deletePBElement={deletePBElement}
-              updateElementLayer={updateElementLayer}
+              rotatePBElement={(id, deg) =>
+                rotatePBElement(
+                  id,
+                  deg,
+                  pedalboardData,
+                  scale,
+                  pbAreaSize,
+                  setPbAreaSize,
+                  setPedalboardData
+                )
+              }
+              deletePBElement={() =>
+                deletePBElement(key, pedalboardData, setPedalboardData)
+              }
+              updateElementLayer={(id, num) =>
+                updateElementLayer(id, num, pedalboardData, setPedalboardData)
+              }
               setActualElement={(val) => (actualElement.current = val)}
               htmlDrag={htmlDrag}
               handleEvent={moveBox}

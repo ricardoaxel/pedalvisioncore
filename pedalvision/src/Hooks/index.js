@@ -1,3 +1,3 @@
 import { useWindowSize } from "./useWindowSize";
-
-export { useWindowSize };
+import { useLocalStorage } from "./useLocalStorage";
+export { useWindowSize, useLocalStorage };

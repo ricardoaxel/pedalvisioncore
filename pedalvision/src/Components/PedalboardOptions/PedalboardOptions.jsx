@@ -3,6 +3,11 @@ import React, { useState } from "react";
 import pedals from "../../utils/pedals.json";
 import pedalboards from "../../utils/pedalboards.json";
 import { getLatestPositions } from "../../utils/functions/getLatestsPositions";
+import {
+  addElement,
+  changeLayoutSize,
+  adjustLayoutToElements,
+} from "./functions";
 
 export const PedalboardOptions = ({
   className,
@@ -27,76 +32,29 @@ export const PedalboardOptions = ({
   unitFactor,
   setUnitFactor,
 }) => {
-  const addElement = (elementIndex, type) => {
-    let elementTypeInfo;
-    if (type === "pedals") {
-      elementTypeInfo = pedals[elementIndex];
-    } else {
-      elementTypeInfo = pedalboards[elementIndex];
-    }
-    let auxObj = {
-      left: 0,
-      top: 0,
-      type: type,
-      Name: elementTypeInfo.Name,
-      Brand: elementTypeInfo.Brand,
-      orientation: 0,
-      //Obtaining the last layer
-      layer: Math.max(...Object.values(pedalboardData).map((el) => el.layer)),
-    };
-    //This validation change the size of the actual area to work in case the element doesn't fit
-    let auxPB = { ...pedalboardData };
-    auxPB[Math.random().toString(16).slice(2)] = auxObj;
-    let changeSize = false;
-    let auxNewSize = { ...pbAreaSize };
-    if (elementTypeInfo.Width * scale + 5 > pbAreaSize.width * scale) {
-      auxNewSize = {
-        ...auxNewSize,
-        width: elementTypeInfo.Width + 10,
-      };
-      changeSize = true;
-    }
-    if (elementTypeInfo.Height * scale + 5 > pbAreaSize.height * scale) {
-      auxNewSize = {
-        ...auxNewSize,
-        height: elementTypeInfo.Height + 10,
-      };
-      changeSize = true;
-    }
-    if (changeSize) {
-      setPbAreaSize(auxNewSize);
-    }
-    setPedalboardData(auxPB);
-  };
-
-  const changeLayoutSize = (value, type) => {
-    let maxOfType = getLatestPositions(pedalboardData, scale, type);
-    if (value > maxOfType / scale) {
-      setPbAreaSize({ ...pbAreaSize, [type]: value });
-    }
-  };
-
-  const adjustLayoutToElements = (type = "both") => {
-    //The use of unitFactor is to adjust to the actual type of units
-    setPbAreaSize({
-      width:
-        type === "width" || type === "both"
-          ? Math.floor(
-              (getLatestPositions(pedalboardData, scale, "width") / scale + 1) *
-                unitFactor
-            ) / unitFactor
-          : pbAreaSize.width,
-      height:
-        type === "height" || type === "both"
-          ? Math.floor(
-              (getLatestPositions(pedalboardData, scale, "height") / scale +
-                1) *
-                unitFactor
-            ) / unitFactor
-          : pbAreaSize.height,
-    });
-  };
   const [hideElements, setHideElements] = useState(true);
+
+  const preAdjustLayoutToElements = (type = "both") => {
+    adjustLayoutToElements(
+      type,
+      setPbAreaSize,
+      pedalboardData,
+      scale,
+      unitFactor,
+      pbAreaSize
+    );
+  };
+
+  const preChangeLayoutSize = (value, type) => {
+    changeLayoutSize(
+      value / unitFactor,
+      type,
+      pedalboardData,
+      scale,
+      setPbAreaSize,
+      pbAreaSize
+    );
+  };
   return (
     <div
       css={Style()}
@@ -173,9 +131,13 @@ export const PedalboardOptions = ({
         Layout size: <br />
         Adjust to last elements:
         <br />
-        <button onClick={() => adjustLayoutToElements()}>Both</button>
-        <button onClick={() => adjustLayoutToElements("width")}>Width</button>
-        <button onClick={() => adjustLayoutToElements("height")}>Height</button>
+        <button onClick={() => preAdjustLayoutToElements("both")}>Both</button>
+        <button onClick={() => preAdjustLayoutToElements("width")}>
+          Width
+        </button>
+        <button onClick={() => preAdjustLayoutToElements("height")}>
+          Height
+        </button>
         <br />
         Fill empty space:
         <br />
@@ -198,7 +160,7 @@ export const PedalboardOptions = ({
           name="lastName"
           value={(pbAreaSize.width * unitFactor).toFixed(2)}
           onChange={(e) => {
-            changeLayoutSize(e.target.value / unitFactor, "width");
+            preChangeLayoutSize(e.target.value, "width");
           }}
         />
         <br />
@@ -207,16 +169,24 @@ export const PedalboardOptions = ({
           type="number"
           name="lastName"
           value={(pbAreaSize.height * unitFactor).toFixed(2)}
-          onChange={(e) =>
-            changeLayoutSize(e.target.value / unitFactor, "height")
-          }
+          onChange={(e) => preChangeLayoutSize(e.target.value, "height")}
         />
         {(!hideElements || htmlDrag) && (
           <>
             <div className="elementSel">
               Pedalboards:
               <select
-                onChange={(e) => addElement(e.target.value, "pedalboards")}
+                onChange={(e) =>
+                  addElement(
+                    e.target.value,
+                    "pedalboards",
+                    pedalboardData,
+                    pbAreaSize,
+                    scale,
+                    setPbAreaSize,
+                    setPedalboardData
+                  )
+                }
               >
                 {pedalboards.map((pedalboard, index) => (
                   <option key={index} value={index}>
@@ -227,7 +197,19 @@ export const PedalboardOptions = ({
             </div>
             <div className="elementSel">
               Pedals:
-              <select onChange={(e) => addElement(e.target.value, "pedals")}>
+              <select
+                onChange={(e) =>
+                  addElement(
+                    e.target.value,
+                    "pedals",
+                    pedalboardData,
+                    pbAreaSize,
+                    scale,
+                    setPbAreaSize,
+                    setPedalboardData
+                  )
+                }
+              >
                 {pedals.map((pedal, index) => (
                   <option key={index} value={index}>
                     {pedal.Name}

@@ -3,7 +3,7 @@ import { Pedalboard } from "../../Components/Pedalboard/Pedalboard";
 import { PedalboardOptions } from "../../Components/PedalboardOptions/PedalboardOptions";
 import { exampleData } from "./exampleData";
 import { Style } from "./PedalboardView.css";
-import { useWindowSize } from "../../Hooks";
+import { useWindowSize, useLocalStorage } from "../../Hooks";
 import { DndProvider } from "react-dnd";
 import MultiBackend from "react-dnd-multi-backend";
 import HTML5toTouch from "react-dnd-multi-backend/dist/esm/HTML5toTouch";
@@ -11,22 +11,16 @@ import HTML5toTouch from "react-dnd-multi-backend/dist/esm/HTML5toTouch";
 export const PedalboardView = () => {
   let windowSize = useWindowSize();
   const bodyRef = useRef();
-  const [pedalboardData, setPedalboardData] = useState(
-    JSON.parse(localStorage.getItem("pedalboardData"))
-      ? JSON.parse(localStorage.getItem("pedalboardData"))
-      : exampleData
+  const [pedalboardData, setPedalboardData] = useLocalStorage(
+    "pedalboardData",
+    exampleData
   );
-  const [scale, setScale] = useState(
-    JSON.parse(localStorage.getItem("scale"))
-      ? JSON.parse(localStorage.getItem("scale"))
-      : 18
-  );
-  const [pbAreaSize, setPbAreaSize] = useState(
-    JSON.parse(localStorage.getItem("pbAreaSize"))
-      ? JSON.parse(localStorage.getItem("pbAreaSize"))
-      : { width: 60, height: 30 }
-  );
-  const [htmlDrag, setHtmlDrag] = useState(true);
+  const [scale, setScale] = useLocalStorage("scale", 18);
+  const [pbAreaSize, setPbAreaSize] = useLocalStorage("pbAreaSize", {
+    width: 60,
+    height: 30,
+  });
+  const [htmlDrag, setHtmlDrag] = useState(false);
   //Temporary options
   const [fitToWidth, setFitToWidth] = useState(false);
   const [fitToHeight, setFitToHeight] = useState(false);
@@ -56,6 +50,7 @@ export const PedalboardView = () => {
     Object.keys(pedalboardData).map((key) => {
       aux2[key].left = (aux2[key].left * newScale) / scale;
       aux2[key].top = (aux2[key].top * newScale) / scale;
+      return "";
     });
     localStorage.setItem("scale", JSON.stringify(newScale));
     setPedalboardData(aux2);
