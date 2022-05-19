@@ -76,7 +76,7 @@ export const Style = (
     :focus,
     :active {
       .borderSquare {
-        border: 1px solid blue;
+        border: 1px solid #1998ff;
       }
       .options {
         opacity: 1;
@@ -111,8 +111,6 @@ export const Style = (
     }
 
     .options {
-      width: 3rem;
-      height: 1rem;
       position: absolute;
       border-radius: 8px;
       bottom: -14px;
@@ -130,23 +128,34 @@ export const Style = (
       -ms-flex-pack: center;
       -webkit-justify-content: center;
       justify-content: center;
-      padding: 4px;
       transition: all 0.2s ease, transform 0.4s ease-out;
       opacity: 0;
       display: ${hideOptions ? "none;" : "flex;"};
+      overflow: hidden;
       p {
+        padding: 4px;
+        padding-top: 0px;
+        padding-bottom: 2px;
         :hover {
           transition: all 0.2s ease, transform 0.4s ease-out;
-          background-color: grey;
+          background-color: #3b3f55;
+          color: white;
           cursor: pointer;
+          padding: 5px;
+          padding-top: 1px;
+          padding-bottom: 3px;
+        }
+        :focus,
+        :active {
+          background-color: #6579d3;
         }
       }
     }
 
     .layer {
-      font-size: 0.6rem;
+      font-size: 0.7rem;
       position: absolute;
-      border-radius: 8px;
+      border-radius: 6px;
       top: -25px;
       left: -23px;
       border: 0px solid transparent;
@@ -154,7 +163,6 @@ export const Style = (
       z-index: 100000000000000;
       display: flex;
       background: #f3f7fb;
-      font-size: 1rem;
       -webkit-align-items: center;
       -webkit-box-align: center;
       -ms-flex-align: center;
@@ -163,17 +171,39 @@ export const Style = (
       -ms-flex-pack: center;
       -webkit-justify-content: center;
       justify-content: center;
-      padding: 4px;
       transition: all 0.2s ease, transform 0.4s ease-out;
       opacity: 0;
       flex-direction: column;
       display: ${hideOptions ? "none;" : "block;"};
+      overflow: hidden;
       p {
-        font-size: 0.8rem;
+        padding: 2px;
+        padding-left: 2px;
+        padding-right: 2px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         :hover {
           transition: all 0.2s ease, transform 0.4s ease-out;
-          background-color: grey;
+          background-color: #3b3f55;
+          color: white;
           cursor: pointer;
+          padding: 4px;
+          padding-left: 2px;
+          padding-right: 2px;
+        }
+        :focus,
+        :active {
+          background-color: #6579d3;
+        }
+      }
+      .special {
+        :hover {
+          padding: 2px;
+          padding-left: 2px;
+          padding-right: 2px;
+          background-color: transparent;
+          color: #000000;
         }
       }
     }

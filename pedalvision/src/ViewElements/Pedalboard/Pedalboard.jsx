@@ -2,7 +2,7 @@ import { Style } from "./Pedalboard.css";
 import React, { useRef, useEffect, useCallback } from "react";
 import pedals from "../../utils/pedals.json";
 import pedalboards from "../../utils/pedalboards.json";
-import { PBElement } from "../PBElement/PBElement";
+import { PBElement } from "../../Components";
 import {
   deletePBElement,
   escFunction,

@@ -5,13 +5,23 @@ export const Style = () => {
     display: flex;
     width: 100%;
     height: 100%;
-    background-color: #8f7474;
     overflow-x: visible;
-    .elementsAddSection {
+    border-top: 0.5px solid #f3f9ff;
+    .optionsSection {
       width: 100%;
-      height: calc(100% - 3rem);
+      height: calc(100%);
       overflow: auto;
-      background-color: blue;
+      /* background-color: blue; */
+      font-size: 1rem;
+      padding: 1rem;
+      h2 {
+        font-size: 1.1rem;
+        font-weight: 500;
+      }
+      > div {
+        padding-bottom: 1rem;
+        border-bottom: 2px solid #f2f8ff;
+      }
     }
     .toggleBtn {
       width: 1rem;

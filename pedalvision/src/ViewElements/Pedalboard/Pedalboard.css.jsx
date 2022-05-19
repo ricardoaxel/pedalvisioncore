@@ -17,7 +17,7 @@ export const Style = (
     height: 100%;
     /* overflow: auto; */
     overflow: scroll;
-    background-color: #c55e5e;
+    background-color: #f5f7fe;
 
     .pedalboardAreaContainer {
       position: absolute;

@@ -1,6 +1,15 @@
-import { Pedalboard } from "./Pedalboard";
-import { PedalboardOptions } from "./PedalboardOptions";
+import { ButtonCustom } from "./ButtonCustom";
 import { PBElement } from "./PBElement";
-import { HTMLDragElement } from "./HTMLDragElement";
+import { InputNumberCustom } from "./InputNumberCustom";
+import { InputCheckboxCustom } from "./InputCheckboxCustom";
+import { SwitchCustom } from "./SwitchCustom";
+import { SelectCustom } from "./SelectCustom";
 
-export { Pedalboard, PedalboardOptions, PBElement, HTMLDragElement };
+export {
+  SwitchCustom,
+  InputCheckboxCustom,
+  InputNumberCustom,
+  PBElement,
+  ButtonCustom,
+  SelectCustom,
+};

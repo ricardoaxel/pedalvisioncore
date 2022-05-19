@@ -1,5 +1,11 @@
 import { Style } from "../PBElement.css";
 import Draggable from "react-draggable";
+import { FiRotateCcw, FiRotateCw } from "react-icons/fi";
+import {
+  AiOutlineClose,
+  AiOutlineArrowUp,
+  AiOutlineArrowDown,
+} from "react-icons/ai";
 
 export const DraggableDrag = ({
   id,
@@ -60,15 +66,25 @@ export const DraggableDrag = ({
 
         <div className="borderSquare" draggable="false">
           <div className={`options `}>
-            <p onClick={() => rotatePBElement(id, -90)}>{"<-"}</p>
-            <p onClick={() => deletePBElement(id)}>X</p>
-            <p onClick={() => rotatePBElement(id, 90)}>{"->"}</p>
+            <p onClick={() => rotatePBElement(id, -90)}>
+              <FiRotateCcw size={9} />
+            </p>
+            <p onClick={() => deletePBElement(id)}>
+              <AiOutlineClose size={12} />
+            </p>
+            <p onClick={() => rotatePBElement(id, 90)}>
+              <FiRotateCw size={9} />
+            </p>
           </div>
         </div>
         <div className={`layer `} draggable="false">
-          <p onClick={() => updateElementLayer(id, 1)}>{"A"}</p>
-          <p>{otherData.layer}</p>
-          <p onClick={() => updateElementLayer(id, -1)}>{"V"}</p>
+          <p onClick={() => updateElementLayer(id, 1)}>
+            <AiOutlineArrowUp />
+          </p>
+          <p className="special">{otherData.layer}</p>
+          <p onClick={() => updateElementLayer(id, -1)}>
+            <AiOutlineArrowDown />
+          </p>
         </div>
       </div>
     </Draggable>
