@@ -1,4 +1,5 @@
 import { css } from "@emotion/react";
+import { bp } from "../../utils/GeneralImports";
 export const Style = () => {
   return css`
     position: relative;
@@ -24,19 +25,37 @@ export const Style = () => {
       }
     }
     .toggleBtn {
-      width: 1rem;
-      height: 2rem;
+      width: 0.9rem;
+      height: 2.5rem;
       position: absolute;
       top: calc(50% - 3rem);
       display: flex;
       justify-content: center;
       align-items: center;
-      left: -1rem;
-      background-color: #dee3e8;
+      left: -0.9rem;
+      background-color: #6a7987;
+      color: white;
       transition: 0.2s;
+      border-radius: 8px 0px 0px 8px;
+      ${bp.phone} {
+        top: -1.5rem;
+        left: calc(50% - 0.45rem);
+        transform: rotate(90deg);
+      }
       :hover {
         cursor: pointer;
         background-color: #d9dbde;
+      }
+      :active,
+      :focus {
+        background: #1367ee;
+      }
+      svg {
+        transition: 0.3s;
+      }
+      .turn {
+        transition: 0.3s;
+        transform: rotate(180deg);
       }
     }
   `;

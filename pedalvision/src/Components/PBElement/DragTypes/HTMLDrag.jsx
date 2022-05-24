@@ -7,7 +7,7 @@ import {
   AiOutlineArrowUp,
   AiOutlineArrowDown,
 } from "react-icons/ai";
-
+import ReactTooltip from "react-tooltip";
 export const HTMLDrag = ({
   id,
   left,
@@ -70,24 +70,26 @@ export const HTMLDrag = ({
       <div className="borderSquare" draggable="false">
         <div className={`options `}>
           <p onClick={() => rotatePBElement(id, -90)}>
-            <FiRotateCcw size={9} />
+            <FiRotateCcw size={9} data-tip="Rotate left" />
           </p>
           <p onClick={() => deletePBElement(id)}>
-            <AiOutlineClose size={12} />
+            <AiOutlineClose size={12} data-tip="Delete" />
           </p>
           <p onClick={() => rotatePBElement(id, 90)}>
             {" "}
-            <FiRotateCw size={9} />
+            <FiRotateCw size={9} data-tip="Rotate right" />
           </p>
+          <ReactTooltip place="bottom" type="dark" effect="float" />
         </div>
       </div>
       <div className={`layer `} draggable="false">
         <p onClick={() => updateElementLayer(id, 1)}>
-          <AiOutlineArrowUp />
+          <AiOutlineArrowUp data-tip="Move up" />
+          <ReactTooltip place="bottom" type="dark" effect="float" />
         </p>
-        <p>{otherData.layer}</p>
+        <p data-tip="Actual layer">{otherData.layer}</p>
         <p onClick={() => updateElementLayer(id, -1)}>
-          <AiOutlineArrowDown />
+          <AiOutlineArrowDown data-tip="Move down" />
         </p>
       </div>
     </div>

@@ -9,6 +9,7 @@ import {
 } from "./functions";
 import { CanvasOptions } from "../CanvasOptions";
 import { AddElements } from "../AddElements/AddElements";
+import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 
 export const PedalboardOptions = ({
   className,
@@ -140,8 +141,8 @@ export const PedalboardOptions = ({
           </>
         )} */}
       </div>
-      <div className="toggleBtn" onClick={() => setHideOptions(!hideOptions)}>
-        {">"}
+      <div className={`toggleBtn`} onClick={() => setHideOptions(!hideOptions)}>
+        <IoIosArrowForward className={`${hideOptions ? "turn" : ""}`} />
       </div>
     </div>
   );

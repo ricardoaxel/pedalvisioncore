@@ -110,7 +110,11 @@ export const Pedalboard = ({
       className={className}
       ref={localRef}
     >
-      <div ref={drop} className="pedalboardAreaContainer">
+      <div
+        ref={drop}
+        className="pedalboardAreaContainer"
+        id="pedalboardAreaContainer"
+      >
         <div className="gridArea"></div>
         {Object.keys(pedalboardData).map((key) => {
           const { left, top, title } = pedalboardData[key];

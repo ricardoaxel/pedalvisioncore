@@ -6,6 +6,8 @@ import {
   AiOutlineArrowUp,
   AiOutlineArrowDown,
 } from "react-icons/ai";
+import ReactTooltip from "react-tooltip";
+import { useState, useEffect } from "react";
 
 export const DraggableDrag = ({
   id,
@@ -22,6 +24,15 @@ export const DraggableDrag = ({
   setActualElement,
   handleEvent,
 }) => {
+  const [jumping, setJumping] = useState(false);
+
+  useEffect(() => {
+    console.log("entro", jumping);
+    if (jumping) {
+      setTimeout(() => setJumping(false), 150);
+    }
+  }, [jumping]);
+
   return (
     <Draggable
       position={{
@@ -44,7 +55,8 @@ export const DraggableDrag = ({
           scale,
           showTransitions,
           otherData,
-          false
+          false,
+          jumping
         )}
         draggable="false"
         onClick={() => {
@@ -66,24 +78,36 @@ export const DraggableDrag = ({
 
         <div className="borderSquare" draggable="false">
           <div className={`options `}>
-            <p onClick={() => rotatePBElement(id, -90)}>
+            <p onClick={() => rotatePBElement(id, -90)} data-tip="Rotate left">
               <FiRotateCcw size={9} />
             </p>
-            <p onClick={() => deletePBElement(id)}>
+            <p onClick={() => deletePBElement(id)} data-tip="Delete">
               <AiOutlineClose size={12} />
             </p>
             <p onClick={() => rotatePBElement(id, 90)}>
-              <FiRotateCw size={9} />
+              <FiRotateCw size={9} data-tip="Rotate right" />
             </p>
           </div>
         </div>
         <div className={`layer `} draggable="false">
-          <p onClick={() => updateElementLayer(id, 1)}>
-            <AiOutlineArrowUp />
+          <p
+            onClick={() => {
+              setJumping(true);
+              updateElementLayer(id, 1);
+            }}
+          >
+            <AiOutlineArrowUp data-tip="Move up" />
           </p>
-          <p className="special">{otherData.layer}</p>
-          <p onClick={() => updateElementLayer(id, -1)}>
-            <AiOutlineArrowDown />
+          <p className="special" data-tip="Actual layer">
+            {otherData.layer}
+          </p>
+          <p
+            onClick={() => {
+              setJumping(true);
+              updateElementLayer(id, -1);
+            }}
+          >
+            <AiOutlineArrowDown data-tip="Move down" />
           </p>
         </div>
       </div>

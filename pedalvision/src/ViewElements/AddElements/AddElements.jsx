@@ -1,15 +1,5 @@
 import { Style } from "./AddElements.css";
 import React, { useState, useEffect } from "react";
-import { changeLayoutSize, adjustLayoutToElements } from "./functions";
-import { BiUpload } from "react-icons/bi";
-import {
-  AiOutlineFilePdf,
-  AiOutlineSave,
-  AiOutlineArrowUp,
-} from "react-icons/ai";
-import { MdHeight } from "react-icons/md";
-import { IoIosResize } from "react-icons/io";
-import { BsFillFileImageFill, BsArrowsAngleContract } from "react-icons/bs";
 import {
   ButtonCustom,
   InputNumberCustom,
@@ -17,7 +7,7 @@ import {
   SwitchCustom,
   SelectCustom,
 } from "../../Components";
-import { CSSTransition } from "../../utils/GeneralImports";
+import { CSSTransition, Images } from "../../utils/GeneralImports";
 import pedals from "../../utils/pedals.json";
 import pedalboards from "../../utils/pedalboards.json";
 
@@ -81,12 +71,14 @@ export const AddElements = ({
             className={elementType === "pedals" ? "active" : ""}
             onClick={() => setElementType("pedals")}
           >
+            <img className="pedalIcon" src={Images.pedalIcon} alt="" />
             Pedal
           </p>
           <p
             className={elementType === "pedalboards" ? "active" : ""}
             onClick={() => setElementType("pedalboards")}
           >
+            <img className="pedalIcon" src={Images.pedalboardIcon} alt="" />
             Pedalboard
           </p>
         </div>
@@ -107,8 +99,8 @@ export const AddElements = ({
               }
             >
               {elementType === "pedalboards"
-                ? Object.keys(pedalboardOptions).map((brand) => (
-                    <optgroup label={brand}>
+                ? Object.keys(pedalboardOptions).map((brand, index) => (
+                    <optgroup label={brand} key={index}>
                       {pedalboardOptions[brand].map((pedalboard) => (
                         <option key={pedalboard.index} value={pedalboard.index}>
                           {pedalboard.Name}
@@ -116,8 +108,8 @@ export const AddElements = ({
                       ))}
                     </optgroup>
                   ))
-                : Object.keys(pedalOptions).map((brand) => (
-                    <optgroup label={brand}>
+                : Object.keys(pedalOptions).map((brand, index) => (
+                    <optgroup label={brand} key={index}>
                       {pedalOptions[brand].map((pedal) => (
                         <option key={pedal.index} value={pedal.index}>
                           {pedal.Name}

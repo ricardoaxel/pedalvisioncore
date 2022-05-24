@@ -43,13 +43,13 @@ export const Style = () => {
       font-family: "Montserrat";
       //SCROLLBAR
       //Firefox
-      scrollbar-color: #c9ced8 #f5f5f5;
+      scrollbar-color: #c9ced8 #ecf1f6;
       scrollbar-width: thin;
       //Chrome & Others
       ::-webkit-scrollbar {
         height: 9px;
-        width: 9px;
-        background: #f5f5f5;
+        width: 8px;
+        background: #ecf1f6;
         cursor: pointer;
       }
 

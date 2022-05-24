@@ -6,7 +6,6 @@ export const SwitchCustom = ({
   rightValue,
   rightAction,
 }) => {
-  console.log(activeSide);
   return (
     <div css={Style()}>
       <div

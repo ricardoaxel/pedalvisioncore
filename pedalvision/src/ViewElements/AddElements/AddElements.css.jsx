@@ -38,6 +38,10 @@ export const Style = () => {
     .margins {
       margin-top: 0.5rem;
     }
+    .pedalIcon {
+      width: 1rem;
+      margin-right: 0.25rem;
+    }
   `;
 };
 

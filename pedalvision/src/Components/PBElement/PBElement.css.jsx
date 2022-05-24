@@ -5,7 +5,8 @@ export const Style = (
   scale,
   showTransitions,
   data,
-  hideOptions
+  hideOptions,
+  jumping
 ) => {
   let responsiveWidth = pedalWidth * scale + "px";
   let responsiveHeight = pedalHeight * scale + "px";
@@ -68,9 +69,12 @@ export const Style = (
       ? "all .2s  ease, transform .1s ease-out;"
       : "0s;"};
     z-index: ${data.layer};
-
     background-color: transparent;
     cursor: move;
+    top: 0rem;
+    bottom: 0rem;
+
+    ${jumping ? " top: -1rem; left: .25rem;" : ""};
 
     :hover,
     :focus,

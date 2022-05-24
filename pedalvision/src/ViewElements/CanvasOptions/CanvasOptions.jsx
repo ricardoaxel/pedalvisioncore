@@ -1,5 +1,5 @@
 import { Style } from "./CanvasOptions.css";
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { changeLayoutSize, adjustLayoutToElements } from "./functions";
 import { BiUpload } from "react-icons/bi";
 import {
@@ -17,6 +17,9 @@ import {
   SwitchCustom,
 } from "../../Components";
 import { CSSTransition } from "../../utils/GeneralImports";
+import downloadjs from "downloadjs";
+import html2canvas from "html2canvas";
+import ReactTooltip from "react-tooltip";
 
 export const CanvasOptions = ({
   setPbAreaSize,
@@ -59,6 +62,15 @@ export const CanvasOptions = ({
       pbAreaSize
     );
   };
+
+  const saveImg = useCallback(async () => {
+    const canvas = await html2canvas(
+      document.getElementById("pedalboardAreaContainer")
+    );
+    const dataURL = canvas.toDataURL("image/png");
+    downloadjs(dataURL, "download.png", "image/png");
+  }, []);
+
   return (
     <div css={Style()} className={`canvasOptions ${className}`}>
       <div className="topSec section">
@@ -66,10 +78,15 @@ export const CanvasOptions = ({
           <h2>Canvas ({unitFactor === "1" ? "in" : "cm"})</h2>
         </div>
         <div className="rightArea">
-          <BsFillFileImageFill />
-          <AiOutlineFilePdf />
-          <AiOutlineSave />
-          <BiUpload className="upload" />
+          <BsFillFileImageFill
+            data-tip="Download image"
+            onClick={() => saveImg()}
+          />
+          {/* <AiOutlineFilePdf /> */}
+
+          <AiOutlineSave data-tip="Download pedalboard data" />
+          <ReactTooltip place="bottom" type="dark" effect="float" />
+          <BiUpload className="upload" data-tip="Load pedalboard" />
         </div>
       </div>
       <CSSTransition
@@ -210,27 +227,35 @@ export const CanvasOptions = ({
       >
         <div className="section fillsSec">
           <div className="row">Adjust canvas to last elements:</div>
+          {/* <ReactTooltip place="bottom" type="dark" effect="float" /> */}
           <div className="row">
+            <ReactTooltip place="bottom" type="dark" effect="float" />
             <ButtonCustom
               className={"optionsBtn"}
               onClick={() => preAdjustLayoutToElements("both")}
+              dataTip="Adjust to width and height"
             >
-              <BsArrowsAngleContract size={15} />
+              <BsArrowsAngleContract
+                size={15}
+                data-tip="Adjust to width and height"
+              />
             </ButtonCustom>
-
+            <ReactTooltip place="bottom" type="dark" effect="float" />
             <ButtonCustom
               className={"optionsBtn"}
               onClick={() => preAdjustLayoutToElements("width")}
+              dataTip="Adjust to width"
             >
               <BsArrowsAngleContract
                 size={15}
                 style={{ transform: "rotate(45deg)" }}
               />
             </ButtonCustom>
-
+            <ReactTooltip place="bottom" type="dark" effect="float" />
             <ButtonCustom
               className={"optionsBtn"}
               onClick={() => preAdjustLayoutToElements("height")}
+              dataTip="Adjust to height"
             >
               <BsArrowsAngleContract
                 size={11}
@@ -240,21 +265,25 @@ export const CanvasOptions = ({
           </div>
           <div className="row">Fill empty space:</div>
           <div className="row">
+            <ReactTooltip place="bottom" type="dark" effect="float" />
             <ButtonCustom
               className={"optionsBtn"}
               onClick={() => fillEmptySpace()}
+              dataTip="Fill to available width and height"
             >
               <IoIosResize size={15} />
             </ButtonCustom>
             <ButtonCustom
               className={"optionsBtn"}
               onClick={() => fillEmptySpace("width")}
+              dataTip="Fill to available width"
             >
               <MdHeight size={15} style={{ transform: "rotate(90deg)" }} />
             </ButtonCustom>
             <ButtonCustom
               className={"optionsBtn"}
               onClick={() => fillEmptySpace("height")}
+              dataTip="Fill to available height"
             >
               <MdHeight size={15} />
             </ButtonCustom>

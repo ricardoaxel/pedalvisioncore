@@ -1,5 +1,5 @@
 import { css } from "@emotion/react";
-import { layoutSizes } from "../../utils/GeneralImports";
+import { layoutSizes, bp } from "../../utils/GeneralImports";
 
 export const Style = (hideOptions) => {
   return css`
@@ -29,16 +29,40 @@ export const Style = (hideOptions) => {
 
       .pbZone {
         transition: 0.5s;
-        width: ${hideOptions ? "100%" : `${layoutSizes.pbZone * 100}%`};
         height: calc(100% - 50px);
         background-color: blue;
         z-index: 1;
+        width: ${hideOptions
+          ? "100%"
+          : `calc(100% - ${layoutSizes.pbOptions.bigpc}px)`};
+        ${bp.smallpc} {
+          width: ${hideOptions
+            ? "100%"
+            : `calc(100% - ${layoutSizes.pbOptions.smallpc}px)`};
+        }
+        ${bp.phone} {
+          width: 100%;
+        }
       }
       .pbOptions {
         transition: 0.5s;
-        width: ${hideOptions ? "0%" : `${layoutSizes.pbOptions * 100}%`};
         height: 100%;
         z-index: 2;
+        min-width: ${hideOptions ? "0%" : layoutSizes.pbOptions.bigpc + "px"};
+        width: ${hideOptions ? "0%" : layoutSizes.pbOptions.bigpc + "px"};
+        ${bp.smallpc} {
+          min-width: ${hideOptions
+            ? "0%"
+            : layoutSizes.pbOptions.smallpc + "px"};
+          width: ${hideOptions ? "0%" : layoutSizes.pbOptions.smallpc + "px"};
+        }
+        ${bp.phone} {
+          width: 100%;
+          position: fixed;
+          bottom: 0;
+          background: white;
+          height: ${hideOptions ? "0%" : `70%`};
+        }
       }
     }
   `;

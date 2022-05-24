@@ -7,7 +7,7 @@ import { DndProvider } from "react-dnd";
 import MultiBackend from "react-dnd-multi-backend";
 import HTML5toTouch from "react-dnd-multi-backend/dist/esm/HTML5toTouch";
 import { preSetScale, fillEmptySpace } from "./functions";
-import { layoutSizes } from "../../utils/GeneralImports";
+import { layoutSizes, simplebp } from "../../utils/GeneralImports";
 
 export const PedalboardView = () => {
   let windowSize = useWindowSize();
@@ -35,14 +35,22 @@ export const PedalboardView = () => {
   });
   const actualElement = useRef();
 
+  let optionsWidth =
+    windowSize.width <= simplebp.phone
+      ? layoutSizes.pbOptions.phone
+      : windowSize.width <= simplebp.smallpc
+      ? layoutSizes.pbOptions.smallpc
+      : layoutSizes.pbOptions.bigpc;
+
   //We send the available dimensions to the child from here to have it before in case we need
   //to calculate percentages and animations
   let availableWidth =
     windowSize !== undefined
       ? hideOptions
         ? windowSize.width
-        : windowSize.width * layoutSizes.pbZone
+        : windowSize.width - optionsWidth
       : "";
+
   let availableHeight = windowSize !== undefined ? windowSize.height - 50 : "";
 
   const preFillEmptySpace = (type) => {

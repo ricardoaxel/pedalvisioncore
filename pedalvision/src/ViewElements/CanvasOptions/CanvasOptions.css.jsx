@@ -87,7 +87,7 @@ export const Style = () => {
       p {
         text-align: right;
       }
-      :nth-child(1) {
+      :nth-of-type(1) {
         margin-right: 1rem;
       }
     }

@@ -1,5 +1,12 @@
 import { Style } from "./ButtonCustom.css";
-export const ButtonCustom = ({ style, children, className, onClick, type }) => {
+export const ButtonCustom = ({
+  style,
+  children,
+  className,
+  onClick,
+  type,
+  dataTip,
+}) => {
   return (
     <button
       style={style}
@@ -7,6 +14,7 @@ export const ButtonCustom = ({ style, children, className, onClick, type }) => {
       type="button"
       className={className}
       onClick={onClick}
+      data-tip={dataTip}
     >
       {children}
     </button>
