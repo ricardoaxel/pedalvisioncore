@@ -9,7 +9,8 @@ import {
 } from "./functions";
 import { CanvasOptions } from "../CanvasOptions";
 import { AddElements } from "../AddElements/AddElements";
-import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
+import { IoIosArrowForward, IoIosArrowBack, IoIosAdd } from "react-icons/io";
+import { Images, simplebp } from "../../utils/GeneralImports";
 
 export const PedalboardOptions = ({
   className,
@@ -33,31 +34,11 @@ export const PedalboardOptions = ({
   fillEmptySpace,
   unitFactor,
   setUnitFactor,
+  windowSize,
 }) => {
-  const preAdjustLayoutToElements = (type = "both") => {
-    adjustLayoutToElements(
-      type,
-      setPbAreaSize,
-      pedalboardData,
-      scale,
-      unitFactor,
-      pbAreaSize
-    );
-  };
-
-  const preChangeLayoutSize = (value, type) => {
-    changeLayoutSize(
-      value / unitFactor,
-      type,
-      pedalboardData,
-      scale,
-      setPbAreaSize,
-      pbAreaSize
-    );
-  };
   return (
     <div
-      css={Style()}
+      css={Style(hideOptions)}
       className={className}
       onMouseEnter={() => {
         setShowTransitions(true);
@@ -82,6 +63,7 @@ export const PedalboardOptions = ({
           fillEmptySpace={fillEmptySpace}
           autofillEmpty={autofillEmpty}
           setAutofillEmpty={setAutofillEmpty}
+          setPedalboardData={setPedalboardData}
         />
         <AddElements
           addElement={addElement}
@@ -92,57 +74,13 @@ export const PedalboardOptions = ({
           setPedalboardData={setPedalboardData}
           htmlDrag={htmlDrag}
         />
-        {/* {(!hideElements || htmlDrag) && (
-          <>
-            <div className="elementSel">
-              Pedalboards:
-              <select
-                onChange={(e) =>
-                  addElement(
-                    e.target.value,
-                    "pedalboards",
-                    pedalboardData,
-                    pbAreaSize,
-                    scale,
-                    setPbAreaSize,
-                    setPedalboardData
-                  )
-                }
-              >
-                {pedalboards.map((pedalboard, index) => (
-                  <option key={index} value={index}>
-                    {pedalboard.Name}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="elementSel">
-              Pedals:
-              <select
-                onChange={(e) =>
-                  addElement(
-                    e.target.value,
-                    "pedals",
-                    pedalboardData,
-                    pbAreaSize,
-                    scale,
-                    setPbAreaSize,
-                    setPedalboardData
-                  )
-                }
-              >
-                {pedals.map((pedal, index) => (
-                  <option key={index} value={index}>
-                    {pedal.Name}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </>
-        )} */}
       </div>
       <div className={`toggleBtn`} onClick={() => setHideOptions(!hideOptions)}>
-        <IoIosArrowForward className={`${hideOptions ? "turn" : ""}`} />
+        {windowSize.width > simplebp.phone || !hideOptions ? (
+          <IoIosArrowForward className={`${hideOptions ? "turn" : ""}`} />
+        ) : (
+          <img src={Images.addPedal} />
+        )}
       </div>
     </div>
   );

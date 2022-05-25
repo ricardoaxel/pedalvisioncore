@@ -1,12 +1,8 @@
 import { Style } from "./CanvasOptions.css";
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useRef, useEffect } from "react";
 import { changeLayoutSize, adjustLayoutToElements } from "./functions";
 import { BiUpload } from "react-icons/bi";
-import {
-  AiOutlineFilePdf,
-  AiOutlineSave,
-  AiOutlineArrowUp,
-} from "react-icons/ai";
+import { AiOutlineSave, AiOutlineArrowUp } from "react-icons/ai";
 import { MdHeight } from "react-icons/md";
 import { IoIosResize } from "react-icons/io";
 import { BsFillFileImageFill, BsArrowsAngleContract } from "react-icons/bs";
@@ -39,6 +35,7 @@ export const CanvasOptions = ({
   fillEmptySpace,
   autofillEmpty,
   setAutofillEmpty,
+  setPedalboardData,
 }) => {
   const [editOptions, setEditOptions] = useState(false);
   const preAdjustLayoutToElements = (type = "both") => {
@@ -71,6 +68,49 @@ export const CanvasOptions = ({
     downloadjs(dataURL, "download.png", "image/png");
   }, []);
 
+  const downloadData = () => {
+    const element = document.createElement("a");
+
+    let ejemplo = {
+      pedalboardData: JSON.parse(localStorage.getItem("pedalboardData")),
+      pbAreaSize: JSON.parse(localStorage.getItem("pbAreaSize")),
+      scale: JSON.parse(localStorage.getItem("scale")),
+    };
+
+    const textFile = new Blob([JSON.stringify(ejemplo)], {
+      type: "text/plain",
+    }); //pass data from localStorage API to blob
+    element.href = URL.createObjectURL(textFile);
+    element.download = "pedalboard.json";
+    document.body.appendChild(element);
+    element.click();
+  };
+
+  //To be able to upload the same time n times
+  useEffect(() => {
+    let fileChooser = document.getElementById("fileChooser");
+    fileChooser.onclick = function () {
+      this.value = "";
+    };
+    fileChooser.onchange = function () {};
+  }, []);
+
+  const loadPB = (data) => {
+    let reader = new FileReader();
+    reader.addEventListener(
+      "load",
+      () => {
+        let pbData = JSON.parse(reader.result);
+        setPbAreaSize(pbData.pbAreaSize);
+        setScale(pbData.scale);
+        setPedalboardData(pbData.pedalboardData);
+      },
+      false
+    );
+    reader.readAsText(data);
+  };
+
+  const inputFile = useRef(null);
   return (
     <div css={Style()} className={`canvasOptions ${className}`}>
       <div className="topSec section">
@@ -84,9 +124,24 @@ export const CanvasOptions = ({
           />
           {/* <AiOutlineFilePdf /> */}
 
-          <AiOutlineSave data-tip="Download pedalboard data" />
+          <AiOutlineSave
+            data-tip="Download pedalboard data"
+            onClick={() => downloadData()}
+          />
           <ReactTooltip place="bottom" type="dark" effect="float" />
-          <BiUpload className="upload" data-tip="Load pedalboard" />
+          <input
+            type="file"
+            id="fileChooser"
+            ref={inputFile}
+            style={{ display: "none" }}
+            accept=".json"
+            onChange={(e) => loadPB(e.target.files[0])}
+          />
+          <BiUpload
+            className="upload"
+            data-tip="Load pedalboard"
+            onClick={(e) => inputFile.current.click()}
+          />
         </div>
       </div>
       <CSSTransition

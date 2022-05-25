@@ -61,7 +61,15 @@ export const Style = (hideOptions) => {
           position: fixed;
           bottom: 0;
           background: white;
-          height: ${hideOptions ? "0%" : `70%`};
+          height: ${hideOptions ? "0%" : `50%`};
+          ${!hideOptions
+            ? `
+            box-shadow: 0px -1px 15px 1px rgb(174, 187, 198);
+            -webkit-box-shadow:  0px -1px 15px 1px rgb(174, 187, 198);
+            -moz-box-shadow:  0px -1px 15px 1px rgb(174, 187, 198);
+            border-radius: 1.5rem 1.5rem 0 0;
+            `
+            : ""}
         }
       }
     }

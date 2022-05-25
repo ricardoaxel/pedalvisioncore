@@ -1,6 +1,6 @@
 import { css } from "@emotion/react";
 import { bp } from "../../utils/GeneralImports";
-export const Style = () => {
+export const Style = (hideOptions) => {
   return css`
     position: relative;
     display: flex;
@@ -33,23 +33,43 @@ export const Style = () => {
       justify-content: center;
       align-items: center;
       left: -0.9rem;
-      background-color: #6a7987;
       color: white;
       transition: 0.2s;
       border-radius: 8px 0px 0px 8px;
+      font-size: 2rem;
+      background-color: #485460;
+      cursor: pointer;
       ${bp.phone} {
-        top: -1.5rem;
-        left: calc(50% - 0.45rem);
+        top: -0.9rem;
+        left: calc(50% - 1.12rem);
         transform: rotate(90deg);
+        border-radius: 4rem;
+        width: 2.5rem;
+        height: 2.5rem;
+        ${hideOptions
+          ? `
+          top: -5rem;
+          left: calc(50% - 1.2rem);
+          background-color: #1085ff;
+          width: 3.5rem;
+          height: 3.5rem;
+          transform: rotate(360deg);
+          box-shadow: 0px 0px 15px 2px rgb(133 173 255);
+          `
+          : ""}
+        img {
+          width: 60%;
+          filter: brightness(0) invert(1);
+        }
       }
-      :hover {
+      /* :hover {
         cursor: pointer;
         background-color: #d9dbde;
-      }
-      :active,
+      } */
+      /* :active,
       :focus {
         background: #1367ee;
-      }
+      } */
       svg {
         transition: 0.3s;
       }

@@ -5,7 +5,6 @@ export const preSetScale = (
   setPedalboardData,
   setScale
 ) => {
-  console.log({ newScale, pedalboardData, scale, setPedalboardData, setScale });
   // When the scale changes the elements positions are recalculated
   let aux2 = { ...pedalboardData };
   Object.keys(pedalboardData).map((key) => {

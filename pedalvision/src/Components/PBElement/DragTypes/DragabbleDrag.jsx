@@ -27,7 +27,6 @@ export const DraggableDrag = ({
   const [jumping, setJumping] = useState(false);
 
   useEffect(() => {
-    console.log("entro", jumping);
     if (jumping) {
       setTimeout(() => setJumping(false), 150);
     }

@@ -76,6 +76,24 @@ export const PedalboardView = () => {
     localStorage.setItem("scale", JSON.stringify(scale));
   }, [scale]);
 
+  const [userHasSelectedHide, setUserHasSelectedHide] = useState(false);
+  //To have control autoopen of menu on desktop devices
+  const preHideOptions = (value) => {
+    if (!userHasSelectedHide) {
+      setUserHasSelectedHide(true);
+    }
+    setHideOptions(value);
+  };
+  useEffect(() => {
+    if (windowSize.width && !userHasSelectedHide) {
+      if (windowSize.width <= simplebp.phone) {
+        setHideOptions(true);
+      } else {
+        setHideOptions(false);
+      }
+    }
+  }, [windowSize.width]);
+
   //Effects
   useEffect(() => {
     let auxScale;
@@ -176,7 +194,7 @@ export const PedalboardView = () => {
           fitToHeight={fitToHeight}
           setFitToHeight={setFitToHeight}
           hideOptions={hideOptions}
-          setHideOptions={setHideOptions}
+          setHideOptions={preHideOptions}
           setShowTransitions={setShowTransitions}
           autofillEmpty={autofillEmpty}
           setAutofillEmpty={setAutofillEmpty}
@@ -188,6 +206,7 @@ export const PedalboardView = () => {
           unitFactor={unitFactor}
           setUnitFactor={setUnitFactor}
           actualElement={actualElement}
+          windowSize={windowSize}
         />
       </div>
     </div>

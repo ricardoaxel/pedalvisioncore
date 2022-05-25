@@ -24,7 +24,7 @@ export const Style = () => {
         align-items: center;
         cursor: pointer;
         transition: 0.2s;
-        :first-child {
+        :first-of-type {
           border-right: 1px solid #a9bdc7;
         }
       }
