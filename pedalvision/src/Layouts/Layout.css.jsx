@@ -1,6 +1,8 @@
 import { css } from "@emotion/react";
+import { useTheme } from "../Hooks";
 
 export const Style = () => {
+  const actualTheme = useTheme();
   return css`
     //Cards font
     @font-face {
@@ -38,26 +40,28 @@ export const Style = () => {
         U+2212, U+2215, U+FEFF, U+FFFD;
     }
     * {
-      //background-color: #c9ced8;
       margin: 0;
       font-family: "Montserrat";
       //SCROLLBAR
       //Firefox
-      scrollbar-color: #c9ced8 #ecf1f6;
+      scrollbar-color: ${` ${actualTheme.scrollbar_background} ${actualTheme.scrollbar_color}`};
       scrollbar-width: thin;
       //Chrome & Others
+      transition: scrollbar-color 0.2s;
       ::-webkit-scrollbar {
         height: 9px;
         width: 8px;
-        background: #ecf1f6;
+        background: ${actualTheme.scrollbar_color};
+        transition: 0.2s;
         cursor: pointer;
       }
 
       ::-webkit-scrollbar-thumb {
-        background: #c9ced8;
+        transition: 0.2s;
+        background: ${actualTheme.scrollbar_background};
         cursor: pointer;
         -webkit-border-radius: 1ex;
-        -webkit-box-shadow: 0px 1px 2px #c9ced8;
+        -webkit-box-shadow: 0px 1px 2px ${actualTheme.scrollbar_background};
       }
 
       ::-webkit-scrollbar-corner {
@@ -70,6 +74,9 @@ export const Style = () => {
       margin: 0;
       transition: color 0.2s;
       font-family: "Rubik";
+      color: ${actualTheme.color};
+      background: ${actualTheme.background};
+      transition: background-color 0.3s, background-image 0.3s;
 
       //Transitions
       .increaseAnimation-enter {

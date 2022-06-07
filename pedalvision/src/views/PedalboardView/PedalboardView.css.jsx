@@ -1,15 +1,13 @@
 import { css } from "@emotion/react";
-import { layoutSizes, bp } from "../../utils/GeneralImports";
+import { layoutSizes, bp, useTheme } from "../../utils/GeneralImports";
 
 export const Style = (hideOptions) => {
+  const actualTheme = useTheme();
   return css`
-    /* font-size: 24px; */
     width: 100%;
     height: 100%;
-    background: #11bb44;
     .headSec {
       height: ${layoutSizes.header};
-      background-color: #fdfefe;
       z-index: 3;
       display: flex;
       align-items: center;
@@ -19,9 +17,15 @@ export const Style = (hideOptions) => {
         font-family: "Righteous";
         font-size: 1.4rem;
       }
+      .optionsSec {
+        position: absolute;
+        right: 1.5rem;
+        svg {
+          font-size: 0.7rem;
+        }
+      }
     }
     .bodySec {
-      background-color: #ffffff;
       width: 100%;
       height: 100%;
       display: flex;
@@ -30,7 +34,6 @@ export const Style = (hideOptions) => {
       .pbZone {
         transition: 0.5s;
         height: calc(100% - 50px);
-        background-color: blue;
         z-index: 1;
         width: ${hideOptions
           ? "100%"
@@ -60,7 +63,6 @@ export const Style = (hideOptions) => {
           width: 100%;
           position: fixed;
           bottom: 0;
-          background: white;
           height: ${hideOptions ? "0%" : `50%`};
           ${!hideOptions
             ? `

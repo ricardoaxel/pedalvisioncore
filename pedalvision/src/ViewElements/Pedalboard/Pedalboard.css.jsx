@@ -1,4 +1,4 @@
-import { css } from "@emotion/react";
+import { css, useTheme } from "../../utils/GeneralImports";
 export const Style = (
   areaWidth,
   areaHeight,
@@ -10,6 +10,8 @@ export const Style = (
   let responsiveWidth = areaWidth * scale + "px";
   let responsiveHeight = areaHeight * scale + "px";
 
+  const actualTheme = useTheme();
+
   return css`
     position: relative;
     display: flex;
@@ -17,11 +19,9 @@ export const Style = (
     height: 100%;
     /* overflow: auto; */
     overflow: scroll;
-    background-color: #f5f7fe;
 
     .pedalboardAreaContainer {
       position: absolute;
-      background-color: #ffffff;
       width: ${responsiveWidth};
       height: ${responsiveHeight};
       transition: 0.3s;
@@ -29,11 +29,9 @@ export const Style = (
       .gridArea {
         width: 100%;
         height: 100%;
-        background-image: repeating-linear-gradient(
-            #edeff2 0 1px,
-            transparent 1px 100%
-          ),
-          repeating-linear-gradient(90deg, #edeff2 0 1px, transparent 1px 100%);
+        background: ${actualTheme.grid_background};
+        background-image: ${actualTheme.grid_color};
+        transition: background-color 0.3s, background-image 0.3s;
         background-size: ${`${scale / unitFactor}px ${scale / unitFactor}px`};
         position: absolute;
       }

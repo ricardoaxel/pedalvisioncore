@@ -2,6 +2,7 @@ import { css } from "@emotion/react";
 // import { useIntl } from "react-intl";
 import { CSSTransition } from "react-transition-group";
 import { Images } from "../assets/images";
+import { useTheme } from "../Hooks";
 // import axios from "axios";
 //Standard media queries for different devices (br:breakpoints)
 
@@ -22,4 +23,4 @@ Object.entries(bp).forEach(([key, value]) => {
   bp[key] = `@media (max-width: ${value}px)`;
 });
 
-export { css, simplebp, bp, layoutSizes, CSSTransition, Images };
+export { css, simplebp, bp, layoutSizes, CSSTransition, Images, useTheme };

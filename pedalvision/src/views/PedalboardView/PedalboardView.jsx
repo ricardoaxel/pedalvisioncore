@@ -9,6 +9,8 @@ import HTML5toTouch from "react-dnd-multi-backend/dist/esm/HTML5toTouch";
 import { preSetScale, fillEmptySpace } from "./functions";
 import { layoutSizes, simplebp } from "../../utils/GeneralImports";
 
+import { SwitchTheme } from "../../Components";
+
 export const PedalboardView = () => {
   let windowSize = useWindowSize();
   const bodyRef = useRef();
@@ -153,6 +155,31 @@ export const PedalboardView = () => {
     <div css={Style(hideOptions)} ref={bodyRef}>
       <div className="headSec">
         <p className="titleLogo"> PedalVision</p>
+        <div className="optionsSec">
+          {/* {actualTheme.displayName === "Light" ? (
+            <BsFillSunFill
+              onClick={() =>
+                sessionInfo.dispatch({
+                  type: "field",
+                  field: "actualTheme",
+                  value: themes.darkTheme,
+                })
+              }
+            />
+          ) : (
+            <BsMoonFill
+              onClick={() =>
+                sessionInfo.dispatch({
+                  type: "field",
+                  field: "actualTheme",
+                  value: themes.lightTheme,
+                })
+              }
+            />
+          )} */}
+
+          <SwitchTheme />
+        </div>
       </div>
       <div className="bodySec">
         <div className="pbZone">
