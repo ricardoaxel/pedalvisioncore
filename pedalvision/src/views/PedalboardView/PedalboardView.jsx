@@ -154,7 +154,7 @@ export const PedalboardView = () => {
   return (
     <div css={Style(hideOptions)} ref={bodyRef}>
       <div className="headSec">
-        <p className="titleLogo"> PedalVision</p>
+        <p className="titleLogo"> PedalVisionn</p>
         <div className="optionsSec">
           {/* {actualTheme.displayName === "Light" ? (
             <BsFillSunFill
